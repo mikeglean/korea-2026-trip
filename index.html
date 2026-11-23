@@ -1082,7 +1082,7 @@
     let roomDocRef = null;
     let isRemoteUpdating = false;
     let lastSyncedTimestamp = 0;
-
+    let hasFetchedCloudOnLoad = false;
     const urlParams = new URLSearchParams(window.location.search);
     let roomId = urlParams.get('room');
     if (!roomId) {
@@ -1288,34 +1288,7 @@
       }
       renderAll();
       saveLocalFallback();
-
-      const payload = {
-        schemaVersion: SCHEMA_VERSION,
-        items: tripItems,
-        expenses: tripExpenses,
-        updatedAt: lastSyncedTimestamp,
-        updatedBy: currentTraveler
-      };
-
-      if (roomDocRef && !isRemoteUpdating) {
-        try {
-          await setDoc(roomDocRef, payload, { merge: true });
-          updateSyncStatus('Live Synced', 'text-emerald-600');
-          return;
-        } catch (err) {
-          updateSyncStatus('Saved Locally', 'text-amber-600');
-        }
-      }
-
-      const cfg = getCloudConfig();
-      if (cfg.binUrl && !isRemoteUpdating) {
-        try {
-          await pushToRestEndpoint(payload);
-          updateSyncStatus('Cloud Synced', 'text-emerald-600');
-        } catch (err) {
-          updateSyncStatus('Cloud Retry Pending', 'text-amber-600');
-        }
-      }
+      updateSyncStatus('Saved Locally', 'text-slate-500');
     }
 
     async function initCloudSync() {
@@ -1341,39 +1314,8 @@
 
           const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
           roomDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'korea_itinerary_2026', roomId);
-          if (cloudPill) cloudPill.textContent = 'Firebase Live';
-
-          onSnapshot(
-            roomDocRef,
-            async (snap) => {
-              if (snap.exists()) {
-                const data = snap.data();
-                if (data.schemaVersion !== SCHEMA_VERSION && Array.isArray(data.items) && data.items.length > 0) {
-                  tripItems = migrateItemsPreservingProgress(data.items);
-                  lastSyncedTimestamp = Date.now();
-                  saveLocalFallback();
-                  renderAll();
-                  await setDoc(roomDocRef, { schemaVersion: SCHEMA_VERSION, items: tripItems, updatedAt: lastSyncedTimestamp }, { merge: true });
-                  updateSyncStatus('Live Synced', 'text-emerald-600');
-                  return;
-                }
-                applyIncomingPayload(data);
-                updateSyncStatus('Live Synced', 'text-emerald-600');
-              } else {
-                await setDoc(roomDocRef, {
-                  schemaVersion: SCHEMA_VERSION,
-                  items: tripItems,
-                  expenses: tripExpenses,
-                  createdAt: Date.now(),
-                  updatedAt: Date.now()
-                });
-                updateSyncStatus('Live Synced', 'text-emerald-600');
-              }
-            },
-            () => {
-              updateSyncStatus('Local Device Mode', 'text-amber-600');
-            }
-          );
+          if (cloudPill) cloudPill.textContent = 'Firebase Ready';
+          updateSyncStatus('Ready (Manual Sync)', 'text-slate-500');
           return;
         }
       } catch (e) {
@@ -1381,9 +1323,10 @@
       }
 
       if (cfg.binUrl) {
-        if (cloudPill) cloudPill.textContent = 'Cloud Active';
-        updateSyncStatus('Cloud Synced', 'text-emerald-600');
+        if (cloudPill) cloudPill.textContent = 'Cloud Ready';
+        updateSyncStatus('Syncing...', 'text-blue-600');
         try {
+          hasFetchedCloudOnLoad = true;
           const hadRemoteData = await pullFromRestEndpoint();
           if (!hadRemoteData && lastSyncedTimestamp > 0) {
             await pushToRestEndpoint({
@@ -1394,19 +1337,10 @@
               updatedBy: currentTraveler
             });
           }
+          updateSyncStatus('Cloud Synced', 'text-emerald-600');
         } catch (e) {
-          // Keep local data and retry on next interval
+          updateSyncStatus('Offline / Local Mode', 'text-amber-600');
         }
-        setInterval(() => {
-          if (document.visibilityState === 'visible') {
-            pullFromRestEndpoint().catch(() => {});
-          }
-        }, 8000);
-        document.addEventListener('visibilitychange', () => {
-          if (document.visibilityState === 'visible') {
-            pullFromRestEndpoint().catch(() => {});
-          }
-        });
       } else {
         if (cloudPill) cloudPill.textContent = 'Local Only';
         updateSyncStatus('Offline / Local Mode', 'text-slate-500');
@@ -1424,8 +1358,20 @@
 
       try {
         if (roomDocRef) {
-          updateSyncStatus('Live Synced', 'text-emerald-600');
-          showToast('✓ Live synced with room');
+          updateSyncStatus('Syncing...', 'text-blue-600');
+          await setDoc(
+            roomDocRef,
+            {
+              schemaVersion: SCHEMA_VERSION,
+              items: tripItems,
+              expenses: tripExpenses,
+              updatedAt: lastSyncedTimestamp || Date.now(),
+              updatedBy: currentTraveler
+            },
+            { merge: true }
+          );
+          updateSyncStatus('Cloud Synced', 'text-emerald-600');
+          showToast('✓ Synced with room');
           return;
         }
 
@@ -1939,10 +1885,17 @@
         return;
       }
 
-      if (pill) pill.textContent = 'Cloud Active';
+      if (pill) pill.textContent = 'Cloud Ready';
       try {
         await pullFromRestEndpoint();
-        await persistItems();
+        await pushToRestEndpoint({
+          schemaVersion: SCHEMA_VERSION,
+          items: tripItems,
+          expenses: tripExpenses,
+          updatedAt: lastSyncedTimestamp || Date.now(),
+          updatedBy: currentTraveler
+        });
+        updateSyncStatus('Cloud Synced', 'text-emerald-600');
         showToast('☁️ Cloud sync connected & synced!');
       } catch (e) {
         updateSyncStatus('Check URL / Key', 'text-rose-600');
