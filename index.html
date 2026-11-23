@@ -1,0 +1,2222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Korea 2026: Mike &amp; Angelu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+      -webkit-tap-highlight-color: transparent;
+    }
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-card {
+      animation: fadeSlideIn 0.2s ease-out;
+    }
+  </style>
+</head>
+<body class="pb-24 bg-slate-50 text-slate-900">
+
+  <!-- STICKY TOP HEADER -->
+  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-2xs">
+    <div class="max-w-3xl mx-auto px-4 py-3">
+      <div class="flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white flex items-center justify-center font-black text-sm shadow-xs shrink-0">
+            🇰🇷
+          </div>
+          <div class="min-w-0">
+            <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-slate-900 truncate">
+              Korea 2026: Mike &amp; Angelu
+            </h1>
+            <div class="flex items-center gap-2 text-[11px] font-medium text-slate-500">
+              <span>Nov 25 – Dec 2, 2026</span>
+              <span>•</span>
+              <span id="sync-badge" class="inline-flex items-center gap-1 text-emerald-600 font-semibold">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span id="sync-text">Connecting...</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button onclick="openAddModal()" class="px-2.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xs font-bold shadow-xs transition flex items-center gap-1.5">
+            <i class="fa-solid fa-plus text-[11px]"></i>
+            <span>Add Stop</span>
+          </button>
+          <button onclick="openShareModal()" class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 text-xs font-bold transition flex items-center gap-1.5">
+            <i class="fa-solid fa-share-nodes text-blue-600"></i>
+            <span>Share</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Traveler Switcher & Overall Progress -->
+      <div class="mt-2.5 flex flex-wrap items-center justify-between gap-2 bg-slate-50 p-2 rounded-2xl border border-slate-200/70">
+        <div class="flex items-center gap-1.5">
+          <span class="text-[11px] font-semibold text-slate-500 pl-1">Checking as:</span>
+          <button id="btn-user-mike" onclick="setTraveler('Mike')" class="px-2.5 py-1 rounded-xl text-xs font-bold transition bg-blue-600 text-white shadow-xs">
+            👨🏻 Mike
+          </button>
+          <button id="btn-user-angelu" onclick="setTraveler('Angelu')" class="px-2.5 py-1 rounded-xl text-xs font-bold transition bg-white text-slate-600 border border-slate-200 hover:bg-slate-100">
+            👩🏻 Angelu
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2.5 flex-1 sm:flex-initial justify-end pr-1">
+          <div class="text-right">
+            <span class="text-[11px] font-bold text-slate-700 block" id="progress-counter">0 / 0 (0%)</span>
+          </div>
+          <div class="w-20 h-2 bg-slate-200 rounded-full overflow-hidden">
+            <div id="progress-bar-fill" class="h-full bg-emerald-500 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs (Zero-Scroll Grid) -->
+      <nav class="mt-2.5 grid grid-cols-4 sm:grid-cols-7 gap-1.5" aria-label="Main navigation">
+        <button onclick="switchTab('docs')" id="tab-docs" class="tab-btn px-2 py-2 rounded-xl text-[11px] sm:text-xs font-bold transition flex flex-col sm:flex-row items-center justify-center gap-1 bg-slate-900 text-white shadow-sm">
+          <i class="fa-solid fa-passport text-xs"></i>
+          <span class="truncate">Docs</span>
+        </button>
+        <button onclick="switchTab('itinerary')" id="tab-itinerary" class="tab-btn px-2 py-2 rounded-xl text-[11px] sm:text-xs font-bold transition flex flex-col sm:flex-row items-center justify-center gap-1 bg-slate-100 text-slate-600 hover:bg-slate-200">
+          <i class="fa-solid fa-calendar-days text-blue-600 text-xs"></i>
+          <span class="truncate">Itinerary</span>
+        </button>
+        <button onclick="switchTab('luggage')" id="tab-luggage" class="tab-btn px-2 py-2 rounded-xl text-[11px] sm:text-xs font-bold transition flex flex-col sm:flex-row items-center justify-center gap-1 bg-emerald-50 text-emerald-800 border border-emerald-200/80 hover:bg-emerald-100">
+          <i class="fa-solid fa-suitcase-rolling text-emerald-600 text-xs"></i>
+          <span class="truncate">Luggage</span>
+        </button>
+        <button onclick="switchTab('bookings')" id="tab-bookings" class="tab-btn px-2 py-2 rounded-xl text-[11px] sm:text-xs font-bold transition flex flex-col sm:flex-row items-center justify-center gap-1 bg-slate-100 text-slate-600 hover:bg-slate-200">
+          <i class="fa-solid fa-ticket text-indigo-600 text-xs"></i>
+          <span class="truncate">Bookings</span>
+        </button>
+        <button onclick="switchTab('food')" id="tab-food" class="tab-btn px-2 py-2 rounded-xl text-[11px] sm:text-xs font-bold transition flex flex-col sm:flex-row items-center justify-center gap-1 bg-slate-100 text-slate-600 hover:bg-slate-200">
+          <i class="fa-solid fa-utensils text-amber-600 text-xs"></i>
+          <span class="truncate">Food</span>
+        </button>
+        <button onclick="switchTab('budget')" id="tab-budget" class="tab-btn px-2 py-2 rounded-xl text-[11px] sm:text-xs font-bold transition flex flex-col sm:flex-row items-center justify-center gap-1 bg-amber-50 text-amber-900 border border-amber-200/80 hover:bg-amber-100">
+          <i class="fa-solid fa-wallet text-amber-600 text-xs"></i>
+          <span class="truncate">Budget</span>
+        </button>
+        <button onclick="switchTab('dsp')" id="tab-dsp" class="tab-btn col-span-2 sm:col-span-1 px-2 py-2 rounded-xl text-[11px] sm:text-xs font-bold transition flex flex-col sm:flex-row items-center justify-center gap-1 bg-slate-100 text-slate-600 hover:bg-slate-200">
+          <i class="fa-solid fa-star text-purple-600 text-xs"></i>
+          <span class="truncate">DSP Pass</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="max-w-3xl mx-auto px-4 pt-4 space-y-5">
+
+    <!-- FILTER BAR (Shown on checklist tabs) -->
+    <div id="filter-bar" class="flex items-center justify-between gap-2 bg-white px-3.5 py-2 rounded-2xl border border-slate-200/80 shadow-2xs">
+      <div class="flex items-center gap-1.5">
+        <button onclick="setFilter('all')" id="filter-all" class="filter-btn px-3 py-1 rounded-xl text-xs font-bold bg-slate-900 text-white transition">All</button>
+        <button onclick="setFilter('pending')" id="filter-pending" class="filter-btn px-3 py-1 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">To Do</button>
+        <button onclick="setFilter('done')" id="filter-done" class="filter-btn px-3 py-1 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Done</button>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="btn-undo-reset" onclick="undoReset()" class="hidden px-2.5 py-1 rounded-xl bg-amber-100 hover:bg-amber-200 active:scale-95 text-amber-900 text-[11px] font-extrabold transition flex items-center gap-1 shadow-2xs">
+          <i class="fa-solid fa-rotate-right"></i> Undo Reset
+        </button>
+        <button onclick="openResetModal()" class="text-[11px] font-semibold text-slate-400 hover:text-rose-600 transition flex items-center gap-1">
+          <i class="fa-solid fa-rotate-left"></i> Reset
+        </button>
+      </div>
+    </div>
+
+    <!-- TAB 1 (FIRST PAGE): DOCUMENTS & MUST-BRING CHECKLIST -->
+    <section id="view-docs" class="space-y-5">
+      <div class="bg-gradient-to-br from-rose-600 via-rose-700 to-slate-900 text-white rounded-2xl p-5 shadow-md">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-white/15 text-rose-100">
+              🛂 Pre-Flight &amp; Immigration Ready
+            </span>
+            <h2 class="text-xl sm:text-2xl font-extrabold mt-1.5">Documents &amp; Travel Essentials</h2>
+            <p class="text-xs text-rose-100/90 mt-1 leading-relaxed">
+              Check off every document, DSP voucher, and booking confirmation for both Mike &amp; Angelu before heading to NAIA Terminal 3 on Nov 24 night. Updates sync live on both phones!
+            </p>
+          </div>
+          <div class="text-right shrink-0 bg-white/10 px-3 py-2 rounded-2xl border border-white/15">
+            <span id="docs-counter" class="text-xl font-extrabold block">0/0</span>
+            <span class="text-[11px] text-rose-100">Packed</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="docs-container" class="space-y-5">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- TAB 2: DAILY ITINERARY -->
+    <section id="view-itinerary" class="hidden space-y-4">
+      <div class="bg-white rounded-2xl border border-slate-200/90 p-2.5 shadow-2xs space-y-2">
+        <div class="grid grid-cols-4 sm:grid-cols-7 gap-1.5" id="day-jump-pills">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <div id="itinerary-container" class="space-y-4">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- TAB 3: LUGGAGE & STEP-FREE TRANSIT GUIDE -->
+    <section id="view-luggage" class="hidden space-y-5">
+      <div class="bg-gradient-to-br from-emerald-700 via-teal-800 to-slate-900 text-white rounded-2xl p-5 shadow-md">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-white/15 text-emerald-100">
+          🚌 Airport Limousine + Railway Playbook
+        </span>
+        <h2 class="text-xl sm:text-2xl font-extrabold mt-1.5">Zero-Lift Luggage &amp; Step-Free Route Guide</h2>
+        <p class="text-xs text-emerald-100/90 mt-1 leading-relaxed">
+          Airport Limousine Bus #6007 handles your suitcases on arrival and departure from Incheon T1, while elevator-first subway exits and level-boarding KTX trains keep every inter-city transfer effortless.
+        </p>
+      </div>
+
+      <div class="space-y-4">
+        <!-- Transfer 1 -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-2xs space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <span class="px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 font-extrabold text-xs">NOV 25 (WED) • ICN Airport → Fairfield Seoul</span>
+            <span class="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">Airport Limousine #6007</span>
+          </div>
+          <h3 class="font-extrabold text-slate-900 text-sm sm:text-base">Airport Limousine Bus #6007 Direct to Fairfield Seoul (6:59 AM / 7:39 AM)</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            <strong>Step 1 (Ticket &amp; Platform):</strong> After clearing customs at Incheon T1 Arrivals (1F), claim your Climate Card (1F West Desk across from Exit 13), top up T-Money, change to Heattech, buy Airport Limousine tickets (₩34,000 for 2 pax), and board <strong>Limousine Bus #6007</strong> (<strong>6:59 AM</strong> departure; next bus <strong>7:39 AM</strong>).<br/>
+            <strong>Step 2 (Under-Bus Luggage):</strong> The bus attendant tags and loads all your suitcases directly into the under-bus compartment—zero lifting or station transfers!<br/>
+            <strong>Step 3 (Drop-off):</strong> Alight at <strong>Fairfield by Marriott Seoul (Yeongdeungpo)</strong> (~90 mins ride, arrives ~08:30 AM) and store luggage at the front desk before heading to Ssada Gimbap.
+          </p>
+          <div class="bg-slate-50 rounded-xl p-3 text-xs text-slate-700 border border-slate-200/70">
+            <strong>Pro Tip:</strong> If you take the <strong>7:39 AM</strong> #6007 bus, adjust Day 1 timings by +40 mins (cut Myeongdong or COEX Aquarium time, or check in at Fairfield in the afternoon). <em>(<strong>Climate Card vs. T-Money Rule:</strong> Use your <strong>Climate Card</strong> for unlimited Seoul subways &amp; Seoul city buses, and use your <strong>T-Money Card</strong> for Airport Limousine #6007, Busan Metro/buses, and Suwon/Gapyeong rides.)</em>
+          </div>
+        </div>
+
+        <!-- Transfer 2 -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-2xs space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <span class="px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 font-extrabold text-xs">NOV 28 (SAT) • Fairfield Seoul → Moonbay Busan</span>
+            <span class="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">Line 1 + KTX033 + Taxi</span>
+          </div>
+          <h3 class="font-extrabold text-slate-900 text-sm sm:text-base">Yeongdeungpo Elevator → Line 1 → Seoul Station KTX033 → Busan Taxi</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            <strong>Step 1 (To KTX):</strong> Check out at 10:30 AM, roll bags from Fairfield to <strong>Yeongdeungpo Station Exit 5 Elevator</strong>, take Line 1 Northbound (11:00–11:25 AM) to <strong>Seoul Station</strong>, and ride the platform elevator directly to the KTX departure concourse.<br/>
+            <strong>Step 2 (On KTX033):</strong> 12:16 PM – 2:58 PM (Car 16, Seats 11A &amp; 11B) — place suitcases in the oversized luggage racks at the ends of your coach.<br/>
+            <strong>Step 3 (Busan Arrival):</strong> Book a taxi from Busan KTX Station (~30 mins, ~₩12,000) straight to <strong>Moonbay Hotel (Gwangan)</strong> at 3:45 PM to drop bags before Lotte Busan!
+          </p>
+        </div>
+
+        <!-- Transfer 3 -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-2xs space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <span class="px-2.5 py-1 rounded-lg bg-purple-50 text-purple-700 font-extrabold text-xs">NOV 30 (MON) • Busan → Hotel GMS Seoul</span>
+            <span class="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">Metro/Taxi + KTX036 + Line 1</span>
+          </div>
+          <h3 class="font-extrabold text-slate-900 text-sm sm:text-base">Moonbay Check-Out → Busan KTX036 (12:34 PM) → Yeongdeungpo Hotel</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Take Busan Metro or taxi to Busan Station for <strong>KTX-CheongRyong036 (12:34 PM → 3:00 PM, Car 3, Seats 8C &amp; 8D)</strong>, then use the Seoul Station indoor subway transfer elevators to connect via Line 1 to Yeongdeungpo / Hotel GMS—drop bags before heading to Hongdae hands-free.
+          </p>
+        </div>
+
+        <!-- Transfer 4 -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-2xs space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <span class="px-2.5 py-1 rounded-lg bg-amber-50 text-amber-800 font-extrabold text-xs">DEC 1 (TUE) • Suwon Day Trip + Airport Limousine</span>
+            <span class="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">Hotel Bag Storage + Bus #6007</span>
+          </div>
+          <h3 class="font-extrabold text-slate-900 text-sm sm:text-base">Hotel Bag Storage (11:30 AM – 6:50 PM) → ITX to Suwon → Airport Limousine</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            <strong>11:30 AM:</strong> Check out and leave all suitcases at the hotel front desk. Walk to Yeongdeungpo Station for the <strong>12:12 or 12:19 PM ITX train</strong> to Suwon completely hands-free.<br/>
+            <strong>6:50 PM:</strong> Return from Suwon (17:42–18:02), rest, pick up luggage at <strong>6:50 PM</strong>, walk to the Airport Limousine pickup point (19:00–19:05), and ride the Airport Limousine Bus (<strong>₩34,000 via T-Money</strong>; taxi option ₩67,000) to Incheon Airport T1 (arrives <strong>8:05 PM</strong>).
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: BOOKINGS & HOTELS -->
+    <section id="view-bookings" class="hidden space-y-5">
+      <div class="bg-gradient-to-br from-indigo-700 via-blue-800 to-slate-900 text-white rounded-2xl p-5 shadow-md">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-blue-200">Pre-Paid Tracker (From Sheet)</span>
+            <h2 class="text-xl sm:text-2xl font-extrabold mt-0.5">Flights, KTX &amp; Hotels</h2>
+          </div>
+          <div class="text-right bg-white/10 px-3.5 py-2 rounded-2xl border border-white/15">
+            <span class="text-[10px] text-blue-200 block">Logged Pre-Paid</span>
+            <span class="text-base sm:text-lg font-extrabold">₱61,607.11</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Flights & Trains -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-2xs space-y-3">
+        <h3 class="font-extrabold text-slate-900 text-sm sm:text-base flex items-center gap-2">
+          <i class="fa-solid fa-plane-departure text-blue-600"></i> Confirmed Flights &amp; KTX Bullet Trains
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1.5">
+            <div class="flex items-center justify-between gap-1">
+              <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold text-[10px]">OUTBOUND • 5J 186</span>
+              <span class="px-2 py-0.5 rounded bg-slate-900 text-white font-mono font-bold text-[11px]">REF: HRIESB</span>
+            </div>
+            <p class="font-bold text-slate-900 pt-0.5">Nov 25, 2026 • 12:10 AM → 05:20 AM (4h 10m)</p>
+            <p class="text-slate-600">Manila (NAIA T3) → Incheon (ICN T1)</p>
+            <p class="text-slate-700 font-medium"><strong>Seats:</strong> Mike 11B • Angelu 11A (GO Easy: 20kg checked bag each)</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1.5">
+            <div class="flex items-center justify-between gap-1">
+              <span class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 font-bold text-[10px]">RETURN • 5J 187</span>
+              <span class="px-2 py-0.5 rounded bg-slate-900 text-white font-mono font-bold text-[11px]">REF: TH512C</span>
+            </div>
+            <p class="font-bold text-slate-900 pt-0.5">Dec 02, 2026 • 02:15 AM → 05:45 AM (4h 30m)</p>
+            <p class="text-slate-600">Incheon (ICN T1) → Manila (NAIA T3)</p>
+            <p class="text-slate-700 font-medium"><strong>Seats:</strong> Mike 22B • Angelu 22A (GO Easy: 20kg checked bag each)</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1.5">
+            <div class="flex items-center justify-between gap-1">
+              <span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 font-bold text-[10px]">KTX SEOUL → BUSAN (NOV 28)</span>
+              <span class="font-bold text-indigo-700">KTX033</span>
+            </div>
+            <p class="font-bold text-slate-900 pt-0.5">12:16 PM → 02:58 PM (₩107,400 total)</p>
+            <p class="text-slate-700 font-medium"><strong>Car 16 • Seats 11A &amp; 11B</strong> (Forward-facing)</p>
+            <p class="text-[11px] text-slate-500 font-mono">Tickets: 80021-1031-10111-22 / 10112-01</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1.5">
+            <div class="flex items-center justify-between gap-1">
+              <span class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 font-bold text-[10px]">KTX BUSAN → SEOUL (NOV 30)</span>
+              <span class="font-bold text-indigo-700">KTX-CheongRyong036</span>
+            </div>
+            <p class="font-bold text-slate-900 pt-0.5">12:34 PM → 03:00 PM (₩108,200 total)</p>
+            <p class="text-slate-700 font-medium"><strong>Car 3 • Seats 8C &amp; 8D</strong> (Forward-facing)</p>
+            <p class="text-[11px] text-slate-500 font-mono">Tickets: 80031-1031-10096-45 / 10097-78</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accommodations -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-2xs space-y-3">
+        <h3 class="font-extrabold text-slate-900 text-sm sm:text-base flex items-center gap-2">
+          <i class="fa-solid fa-hotel text-emerald-600"></i> Confirmed Hotels &amp; Transit Distances
+        </h3>
+        <div class="space-y-3 text-xs">
+          <div class="p-3.5 rounded-xl bg-emerald-50/60 border border-emerald-200 space-y-1.5">
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-extrabold text-slate-900 text-sm">1. Fairfield by Marriott Seoul (Nov 25 – Nov 28)</span>
+              <span class="font-bold text-emerald-700">₱23,194.64</span>
+            </div>
+            <p class="text-slate-600"><strong>Nearest Station:</strong> Yeongdeungpo Station (Line 1 Blue Line — 5 mins walk) • Paid via BDO Visa Mike CC</p>
+            <div class="flex flex-wrap gap-1.5 pt-1 text-[11px]">
+              <span class="px-2 py-0.5 rounded bg-white border border-slate-200">Seoul Station: 25m train</span>
+              <span class="px-2 py-0.5 rounded bg-white border border-slate-200">Yongsan: 20m train</span>
+              <span class="px-2 py-0.5 rounded bg-white border border-slate-200">Gwanghwamun: 35m</span>
+              <span class="px-2 py-0.5 rounded bg-white border border-slate-200">Suwon: 14m ITX</span>
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-blue-50/60 border border-blue-200 space-y-1">
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-extrabold text-slate-900 text-sm">2. Gwangalli Moon Bay Hotel Busan (Nov 28 – Nov 30)</span>
+              <span class="font-bold text-blue-700">₱14,262.25</span>
+            </div>
+            <p class="text-slate-600">2 Nights in Busan • Check-in 5 PM (front desk closes 9 PM–9 AM) • Paid via BDO Visa Mike CC</p>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-purple-50/60 border border-purple-200 space-y-1">
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-extrabold text-slate-900 text-sm">3. Hotel GMS Seoul (Nov 30 – Dec 1)</span>
+              <span class="font-bold text-purple-700">₱4,904.60</span>
+            </div>
+            <p class="text-slate-600">1 Night in Seoul (Leave bags at concierge on Dec 1 for Suwon trip) • Paid via BDO Visa Mike CC</p>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-amber-50/60 border border-amber-200 space-y-1">
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-extrabold text-slate-900 text-sm">4. Klook Busan Guided Day Tour (Nov 29)</span>
+              <span class="font-bold text-amber-800">₱8,939.10</span>
+            </div>
+            <p class="text-slate-600">Full-day Busan coastal &amp; cultural tour • Paid via BDO Visa Angelu CC</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: FOOD & FREE TIME -->
+    <section id="view-food" class="hidden space-y-5">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-2xs space-y-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="font-extrabold text-slate-900 text-base sm:text-lg">🍜 Saved Restaurant Picks</h2>
+            <p class="text-xs text-slate-500">Check break times before heading out!</p>
+          </div>
+        </div>
+        <div id="food-container" class="space-y-2.5">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-2xs space-y-3">
+        <div>
+          <h2 class="font-extrabold text-slate-900 text-base sm:text-lg">🗺️ Optional Free-Time Spots</h2>
+          <p class="text-xs text-slate-500">Grouped by neighborhood so you don't backtrack across Seoul.</p>
+        </div>
+        <div id="freetime-container" class="space-y-2.5">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: DISCOVER SEOUL PASS (72H MOBILE) -->
+    <section id="view-dsp" class="hidden space-y-5">
+      <div class="bg-gradient-to-br from-purple-700 via-indigo-700 to-slate-900 text-white rounded-2xl p-5 shadow-md">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-white/15 text-purple-100">
+          🎫 72-Hour Mobile Discover Seoul Pass (Ref: EPJ738954 &amp; FRJ664933)
+        </span>
+        <h2 class="text-xl sm:text-2xl font-extrabold mt-1.5">DSP Attractions &amp; Perks Checklist</h2>
+        <p class="text-xs text-purple-100/90 mt-1 leading-relaxed">
+          Your <strong>72-hour</strong> clock starts at your <strong>first attraction scan</strong> (Changdeokgung Palace on Day 1 at 11:15 AM) and covers Day 1 (Changdeokgung, COEX Aquarium), Day 2 (Daehan Hanbok, Gyeongbokgung, N Seoul Tower, Moonlight E-Land Cruise), and Day 3 (Nami Ferry, Lotte World Adventure)!
+        </p>
+      </div>
+
+      <div id="dsp-container" class="space-y-2.5">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- TAB 7: FINANCES & BUDGET PLANNER -->
+    <section id="view-budget" class="hidden space-y-5">
+      <div class="bg-gradient-to-br from-amber-600 via-orange-600 to-slate-900 text-white rounded-2xl p-5 shadow-md space-y-4">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-white/15 text-amber-100">
+              💰 2 Pax Trip Budget (Nov 25 – Dec 2)
+            </span>
+            <h2 class="text-xl sm:text-2xl font-extrabold mt-1.5">Trip Finances &amp; Pocket Money</h2>
+            <p class="text-xs text-amber-100/90 mt-0.5">
+              Est. Exchange Rate: <strong>₩1,000 ≈ ₱43.50</strong> (or ₱1 ≈ ₩23)
+            </p>
+          </div>
+          <div class="text-right bg-white/15 px-3 py-2 rounded-2xl border border-white/20 shrink-0">
+            <span class="text-[10px] uppercase tracking-wider text-amber-100 block font-bold">Total Trip Est.</span>
+            <span class="text-lg sm:text-xl font-extrabold">₱114,457</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 text-xs">
+          <div class="bg-white/10 rounded-xl p-2.5 border border-white/15">
+            <span class="text-[10px] text-amber-100 block">Pre-Paid (Sheet)</span>
+            <span class="font-extrabold text-sm sm:text-base">₱61,607</span>
+            <span class="text-[10px] text-emerald-200 block">Hotels, KTX, Tour</span>
+          </div>
+          <div class="bg-white/10 rounded-xl p-2.5 border border-white/15">
+            <span class="text-[10px] text-amber-100 block">Recommended Cash</span>
+            <span class="font-extrabold text-sm sm:text-base">₩720,000</span>
+            <span class="text-[10px] text-amber-100 block">≈ ₱31,320 (Food/Transit)</span>
+          </div>
+          <div class="bg-white/10 rounded-xl p-2.5 border border-white/15">
+            <span class="text-[10px] text-amber-100 block">Shopping Buffer</span>
+            <span class="font-extrabold text-sm sm:text-base">₩495,000</span>
+            <span class="text-[10px] text-amber-100 block">≈ ₱21,530 (Cards/Cash)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick KRW <-> PHP Currency Converter -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-2xs space-y-3">
+        <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
+          <div>
+            <h3 class="font-extrabold text-slate-900 text-sm sm:text-base flex items-center gap-1.5">
+              <i class="fa-solid fa-arrows-rotate text-blue-600"></i> Quick KRW (₩) ↔ PHP (₱) Converter
+            </h3>
+            <p class="text-xs text-slate-500">Type in either box while shopping or eating out</p>
+          </div>
+          <div class="flex items-center gap-1 text-[11px] bg-slate-100 px-2.5 py-1 rounded-xl border border-slate-200">
+            <span class="text-slate-500 font-semibold">₩1k = ₱</span>
+            <input id="conv-rate" type="number" step="0.1" value="43.5" oninput="convertCurrency('krw')" class="w-12 bg-transparent font-extrabold text-slate-900 focus:outline-none text-right" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20">
+            <label for="conv-krw" class="block text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">🇰🇷 South Korean Won (KRW ₩)</label>
+            <div class="flex items-center gap-1.5">
+              <span class="font-extrabold text-slate-400 text-base">₩</span>
+              <input id="conv-krw" type="number" inputmode="decimal" placeholder="10000" oninput="convertCurrency('krw')" class="w-full bg-transparent text-base font-extrabold text-slate-900 focus:outline-none" />
+            </div>
+          </div>
+          <div class="bg-blue-50/60 p-3 rounded-xl border border-blue-200 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20">
+            <label for="conv-php" class="block text-[10px] font-extrabold uppercase tracking-wider text-blue-700 mb-1">🇵🇭 Philippine Peso (PHP ₱)</label>
+            <div class="flex items-center gap-1.5">
+              <span class="font-extrabold text-blue-500 text-base">₱</span>
+              <input id="conv-php" type="number" inputmode="decimal" placeholder="435.00" oninput="convertCurrency('php')" class="w-full bg-transparent text-base font-extrabold text-blue-950 focus:outline-none" />
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-1.5 pt-0.5">
+          <span class="text-[11px] font-semibold text-slate-400 mr-1">Quick tap:</span>
+          <button type="button" onclick="setQuickKrw(1000)" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 active:scale-95 text-xs font-bold text-slate-700 transition">₩1,000</button>
+          <button type="button" onclick="setQuickKrw(5000)" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 active:scale-95 text-xs font-bold text-slate-700 transition">₩5,000</button>
+          <button type="button" onclick="setQuickKrw(10000)" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 active:scale-95 text-xs font-bold text-slate-700 transition">₩10,000</button>
+          <button type="button" onclick="setQuickKrw(30000)" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 active:scale-95 text-xs font-bold text-slate-700 transition">₩30,000</button>
+          <button type="button" onclick="setQuickKrw(50000)" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 active:scale-95 text-xs font-bold text-slate-700 transition">₩50,000</button>
+          <button type="button" onclick="setQuickKrw(100000)" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 active:scale-95 text-xs font-bold text-slate-700 transition">₩100,000</button>
+        </div>
+      </div>
+
+      <!-- Pre-Paid Breakdown -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-2xs space-y-3">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+          <div>
+            <h3 class="font-extrabold text-slate-900 text-sm sm:text-base">1. Pre-Paid &amp; Card-Charged Bookings</h3>
+            <p class="text-xs text-slate-500">Tracked from your BILLS sheet (excl. flights already paid in Sept)</p>
+          </div>
+          <span class="px-2.5 py-1 rounded-xl bg-emerald-50 text-emerald-700 font-extrabold text-xs">₱61,607.11</span>
+        </div>
+        <div class="divide-y divide-slate-100 text-xs">
+          <div class="py-2 flex items-center justify-between gap-2">
+            <div>
+              <p class="font-bold text-slate-900">Fairfield by Marriott Seoul (Nov 25–28 • 3 Nights)</p>
+              <p class="text-slate-500">BDO Visa Mike CC • Oct 31, 2026</p>
+            </div>
+            <span class="font-extrabold text-slate-900">₱23,194.64</span>
+          </div>
+          <div class="py-2 flex items-center justify-between gap-2">
+            <div>
+              <p class="font-bold text-slate-900">Moonbay Hotel Busan (Nov 28–30 • 2 Nights)</p>
+              <p class="text-slate-500">BDO Visa Mike CC • Oct 31, 2026</p>
+            </div>
+            <span class="font-extrabold text-slate-900">₱14,262.25</span>
+          </div>
+          <div class="py-2 flex items-center justify-between gap-2">
+            <div>
+              <p class="font-bold text-slate-900">Klook Busan Guided Day Tour (Nov 29 • 2 Pax)</p>
+              <p class="text-slate-500">BDO Visa Angelu CC • Oct 31, 2026</p>
+            </div>
+            <span class="font-extrabold text-slate-900">₱8,939.10</span>
+          </div>
+          <div class="py-2 flex items-center justify-between gap-2">
+            <div>
+              <p class="font-bold text-slate-900">KTX Busan → Seoul (KTX036 • ₩108,200)</p>
+              <p class="text-slate-500">Metrobank Mike CC • Oct 31, 2026</p>
+            </div>
+            <span class="font-extrabold text-slate-900">₱5,172.38</span>
+          </div>
+          <div class="py-2 flex items-center justify-between gap-2">
+            <div>
+              <p class="font-bold text-slate-900">KTX Seoul → Busan (KTX033 • ₩107,400)</p>
+              <p class="text-slate-500">Metrobank Mike CC • Oct 31, 2026</p>
+            </div>
+            <span class="font-extrabold text-slate-900">₱5,134.14</span>
+          </div>
+          <div class="py-2 flex items-center justify-between gap-2">
+            <div>
+              <p class="font-bold text-slate-900">Hotel GMS Seoul (Nov 30–Dec 1 • 1 Night)</p>
+              <p class="text-slate-500">BDO Visa Mike CC • Oct 31, 2026</p>
+            </div>
+            <span class="font-extrabold text-slate-900">₱4,904.60</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recommended On-Trip Costing (2 Pax) -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-2xs space-y-3">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+          <div>
+            <h3 class="font-extrabold text-slate-900 text-sm sm:text-base">2. Recommended On-Trip Costing (2 Pax)</h3>
+            <p class="text-xs text-slate-500">Optimized with your 72h Discover Seoul Pass savings</p>
+          </div>
+          <span class="px-2.5 py-1 rounded-xl bg-amber-50 text-amber-800 font-extrabold text-xs">₩720,000 (~₱31,320)</span>
+        </div>
+
+        <div class="space-y-2.5 text-xs">
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/70 flex items-start justify-between gap-2">
+            <div>
+              <p class="font-bold text-slate-900">🚌 Airport Limousine #6007 (Arrival &amp; Return) + Climate Card &amp; T-Money</p>
+              <p class="text-slate-600 mt-0.5">Arrival Limousine #6007 (₩34k) + Return Limousine (₩34k) + Climate Card &amp; T-Money top-ups (₩60k)</p>
+            </div>
+            <div class="text-right shrink-0">
+              <span class="font-extrabold text-slate-900 block">₩128,000</span>
+              <span class="text-[11px] text-slate-500">~₱5,570</span>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/70 flex items-start justify-between gap-2">
+            <div>
+              <p class="font-bold text-slate-900">🚄 ITX-Cheongchun + Gapyeong Taxis + Suwon ITX</p>
+              <p class="text-slate-600 mt-0.5">Yongsan–Gapyeong ITX + Gapyeong–Cheongnyangni (₩11.4k) + Gapyeong taxis (₩12k) + Suwon ITX &amp; Busan taxis (₩32k)</p>
+            </div>
+            <div class="text-right shrink-0">
+              <span class="font-extrabold text-slate-900 block">₩78,400</span>
+              <span class="text-[11px] text-slate-500">~₱3,410</span>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/70 flex items-start justify-between gap-2">
+            <div>
+              <p class="font-bold text-slate-900">🍖 Daily Meals, Cafes &amp; Street Food (7 Days)</p>
+              <p class="text-slate-600 mt-0.5">Ssada Gimbap (₩18k), OTR (₩18k), 1in1jan Cafe (₩70k), Nami lunch (₩40k), K-BBQ, Lotteria &amp; Busan street food</p>
+            </div>
+            <div class="text-right shrink-0">
+              <span class="font-extrabold text-slate-900 block">₩480,000</span>
+              <span class="text-[11px] text-slate-500">~₱20,880</span>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-xl bg-emerald-50/80 border border-emerald-200 text-emerald-900">
+            <p class="font-extrabold">💡 Money-Saving &amp; Cash Split Tip:</p>
+            <p class="mt-0.5 leading-relaxed">
+              Your <strong>72h Mobile Discover Seoul Pass</strong> covers Changdeokgung Palace, COEX Aquarium, Daehan Hanbok, Gyeongbokgung Palace, N Seoul Tower, Moonlight E-Land Cruise, Nami Ferry &amp; Lotte World Adventure! Bring <strong>₩450,000–₩500,000 in physical KRW cash</strong> (for T-Money/Climate Card top-ups, street food, and markets) and put restaurants &amp; shopping on your credit cards.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live On-Trip Expense Tracker -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-2xs space-y-3.5">
+        <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
+          <div>
+            <h3 class="font-extrabold text-slate-900 text-sm sm:text-base">3. Live On-Trip Expense Log (Synced)</h3>
+            <p class="text-xs text-slate-500">Log cash or card spends during your trip—syncs live on both phones</p>
+          </div>
+          <div class="text-right">
+            <span id="live-expense-total-krw" class="text-sm font-extrabold text-blue-700 block">₩0</span>
+            <span id="live-expense-total-php" class="text-[11px] font-semibold text-slate-500">≈ ₱0</span>
+          </div>
+        </div>
+
+        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80 space-y-2.5">
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-2">
+            <input id="exp-title" type="text" placeholder="Item (e.g., Myeongdong Street Food)" class="sm:col-span-6 rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <div class="sm:col-span-6 flex items-center gap-1.5">
+              <select id="exp-currency" onchange="updateExpenseCurrencyPlaceholder()" class="rounded-xl border border-slate-300 bg-white px-2.5 py-2 text-xs font-extrabold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 shrink-0">
+                <option value="KRW">🇰🇷 KRW (₩)</option>
+                <option value="PHP">🇵🇭 PHP (₱)</option>
+              </select>
+              <input id="exp-amount" type="number" inputmode="decimal" placeholder="Amount in Won (₩)" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-12 gap-2">
+            <select id="exp-paid-by" class="sm:col-span-3 rounded-xl border border-slate-300 bg-white px-2.5 py-2 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="Mike">👨🏻 Mike</option>
+              <option value="Angelu">👩🏻 Angelu</option>
+            </select>
+            <select id="exp-method" onchange="toggleExpenseCardDropdown()" class="sm:col-span-3 rounded-xl border border-slate-300 bg-white px-2.5 py-2 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="Cash">💵 Cash</option>
+              <option value="T-Money">🚇 T-Money</option>
+              <option value="Card">💳 Card</option>
+            </select>
+            <select id="exp-card-type" class="hidden col-span-2 sm:col-span-4 rounded-xl border border-blue-300 bg-blue-50/70 px-2.5 py-2 text-xs font-extrabold text-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="BDO VISA">💳 BDO VISA</option>
+              <option value="HSBC">💳 HSBC</option>
+              <option value="UNIONBANK">💳 UNIONBANK</option>
+            </select>
+            <button id="exp-log-btn" onclick="addExpenseEntry()" class="col-span-2 sm:col-span-6 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xs font-bold py-2 px-3 transition">
+              + Log Expense
+            </button>
+          </div>
+        </div>
+
+        <div id="expense-list-container" class="space-y-2">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ADD ITEM MODAL -->
+  <div id="add-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl space-y-4 animate-card">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="font-extrabold text-slate-900 text-base">Add Activity or Checklist Item</h3>
+        <button onclick="closeAddModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-sm">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Section / Day</label>
+          <select id="new-task-group" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="day1">Day 1 – Nov 25 (Wed) | Myeongdong, Palace, OTR, COEX</option>
+            <option value="day2">Day 2 – Nov 26 (Thu) | Hanbok, Gyeongbokgung, Eunpyeong, N Tower</option>
+            <option value="day3">Day 3 – Nov 27 (Fri) | Nami Island &amp; Lotte World</option>
+            <option value="day4">Day 4 – Nov 28 (Sat) | KTX to Busan &amp; Lotte Busan</option>
+            <option value="day5">Day 5 – Nov 29 (Sun) | Busan Klook Tour</option>
+            <option value="day6">Day 6 – Nov 30 (Mon) | Cheongsapo Station, Travel to Seoul</option>
+            <option value="day7">Day 7 – Dec 1 (Tue) | Suwon, Airport Limousine &amp; Flight Home</option>
+            <option value="docs_mike">Documents – 👨🏻 Mike's Personal Checklist</option>
+            <option value="docs_angelu">Documents – 👩🏻 Angelu's Personal Checklist</option>
+            <option value="docs_shared">Documents – 💑 Shared Hotels &amp; Vouchers</option>
+            <option value="food_spots">Food – Restaurant Option</option>
+            <option value="free_time">Free Time – Optional Spot</option>
+            <option value="dsp_list">Discover Seoul Pass Attraction</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Time / Label</label>
+            <input id="new-task-time" type="text" placeholder="e.g., 14:30 or Must Have" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Tag</label>
+            <input id="new-task-tag" type="text" placeholder="e.g., Shopping / Visa" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Activity / Item Title *</label>
+          <input id="new-task-title" type="text" placeholder="e.g., Olive Young Myeongdong Flagship" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Notes / Route Tip</label>
+          <textarea id="new-task-notes" rows="2" placeholder="Station exit, elevator tip, or reminder..." class="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+
+        <!-- Optional Photo / QR / PDF Upload in Add Modal -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Attach PDF / Photo / QR (Optional)</label>
+          <div class="flex items-center gap-2.5">
+            <label class="cursor-pointer inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition">
+              <i class="fa-solid fa-paperclip text-blue-600"></i>
+              <span>Choose PDF or Image</span>
+              <input id="new-task-media-input" type="file" accept="image/*,.pdf,application/pdf" onchange="handleNewTaskMediaSelect(event)" class="hidden" />
+            </label>
+            <span id="new-task-media-status" class="text-[11px] text-slate-500 truncate">No file selected</span>
+          </div>
+          <div id="new-task-media-preview" class="hidden mt-2 relative inline-block">
+            <img id="new-task-media-img" src="" alt="Preview" class="h-20 w-auto rounded-xl border border-slate-200 object-cover" />
+            <div id="new-task-media-pdf-badge" class="hidden h-14 px-3.5 rounded-xl border border-rose-200 bg-rose-50 text-rose-800 flex items-center gap-2 text-xs font-extrabold">
+              <i class="fa-solid fa-file-pdf text-rose-600 text-lg"></i>
+              <span id="new-task-media-pdf-name" class="max-w-[180px] truncate">Document.pdf</span>
+            </div>
+            <button type="button" onclick="clearNewTaskMedia()" class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-rose-600 text-white text-[10px] flex items-center justify-center shadow-xs">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-2">
+        <button onclick="closeAddModal()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">Cancel</button>
+        <button onclick="saveNewTask()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-sm">Save Item</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FULLSCREEN MEDIA & PDF LIGHTBOX MODAL -->
+  <div id="media-lightbox" class="fixed inset-0 z-50 hidden bg-slate-950/90 backdrop-blur-xs flex flex-col items-center justify-center p-4" onclick="closeMediaLightbox()">
+    <div class="w-full max-w-2xl flex items-center justify-between gap-2 text-white mb-3" onclick="event.stopPropagation()">
+      <span id="lightbox-caption" class="text-xs font-bold truncate pr-2">Attachment Preview</span>
+      <div class="flex items-center gap-2 shrink-0">
+        <a id="lightbox-download" href="#" download="attachment" target="_blank" rel="noopener noreferrer" class="hidden px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition flex items-center gap-1.5">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Open / Save
+        </a>
+        <button onclick="closeMediaLightbox()" class="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </div>
+    <img id="lightbox-img" src="" alt="Full attachment" class="max-h-[78vh] max-w-full rounded-2xl shadow-2xl border border-white/15 object-contain" onclick="event.stopPropagation()" />
+    <iframe id="lightbox-pdf" src="" title="PDF Preview" class="hidden w-full max-w-2xl h-[78vh] rounded-2xl bg-white shadow-2xl border border-white/15" onclick="event.stopPropagation()"></iframe>
+  </div>
+
+  <!-- SHARE MODAL -->
+  <div id="share-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl space-y-4 animate-card">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="font-extrabold text-slate-900 text-base">Share Live Checklist with Angelu</h3>
+        <button onclick="closeShareModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <p class="text-xs text-slate-600 leading-relaxed">
+        Send this link to Angelu's phone. Whenever either of you checks off an item, edits notes, or adds a stop, it updates automatically on both phones!
+      </p>
+      <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-2">
+        <div class="flex items-center justify-between text-[11px] font-bold text-slate-500">
+          <span>SHARED TRIP ROOM CODE</span>
+          <span id="room-code-display" class="text-blue-600 font-mono"></span>
+        </div>
+        <div class="flex items-center gap-2">
+          <input id="share-url-input" type="text" readonly class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-700 font-mono" />
+          <button onclick="copyShareUrl()" class="shrink-0 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs">
+            Copy
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESET CONFIRM MODAL -->
+  <div id="reset-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-sm rounded-3xl p-5 shadow-2xl space-y-4 animate-card">
+      <h3 class="font-extrabold text-slate-900 text-base">Reset All Checkboxes?</h3>
+      <p class="text-xs text-slate-600 leading-relaxed">
+        This will restore the default itinerary &amp; documents list and uncheck all completed items for both Mike and Angelu.
+      </p>
+      <div class="flex items-center justify-end gap-2">
+        <button onclick="closeResetModal()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">Cancel</button>
+        <button onclick="executeResetDefaults()" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold">Yes, Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-opacity duration-200 bg-slate-900 text-white text-xs font-bold px-4 py-2.5 rounded-full shadow-lg flex items-center gap-2.5">
+    <span id="toast-msg">Saved!</span>
+    <button id="toast-undo-btn" onclick="undoReset()" class="hidden pointer-events-auto px-2.5 py-0.5 rounded-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-[11px] transition">
+      Undo
+    </button>
+  </div>
+
+  <!-- FIREBASE & APP LOGIC -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // =========================================================================
+    // 1. EXACT SPREADSHEET ITINERARY DATA (Days 1–7 + Documents)
+    // =========================================================================
+    const SCHEMA_VERSION = '2026_11_23_spreadsheet_days1_to_7';
+
+    const DAY_META = [
+      {
+        id: 'day1',
+        short: 'Day 1 • Nov 25',
+        title: 'DAY 1 – NOV 25 (WED) | Myeongdong, 1 Palace, OTR, COEX & Gangnam Dinner',
+        subtitle: 'Incheon → Fairfield → Ssada Gimbap → Myeongdong → Changdeokgung → OTR → COEX → Dinner w/ Pam',
+        luggageMode: 'Airport Limousine Bus #6007 (6:59 AM / 7:39 AM)',
+        luggageTip: 'Claim Climate Card (ICN T1 1F West Desk across from Exit 13), load T-Money, change to Heattech, and take Limousine #6007 (6:59 AM, ₩34,000) to Fairfield Seoul to drop luggage at 8:30 AM!',
+        routeRec: 'Notes: Add Hallyu K-Star Road optional if have time (20 mins from COEX via train). If taking 7:39 AM #6007 bus, adjust all itinerary by +40 mins.'
+      },
+      {
+        id: 'day2',
+        short: 'Day 2 • Nov 26',
+        title: 'DAY 2 – NOV 26 (THU) | Hanbok, Gyeongbukgung, Eunpyeong, N Seoul Tower & E-Land Cruise',
+        subtitle: 'Gwanghwamun & Daehan Hanbok → Eunpyeong Hanok (1in1jan) → N Seoul Tower → Moonlight E-Land Cruise',
+        luggageMode: '100% Hands-Free (Bags Stay at Fairfield)',
+        luggageTip: 'Walk 10 mins to Singil Station (Purple Line 5) for a direct ride to Gwanghwamun! Return rental hanbok by 11:10 AM before heading to Eunpyeong Hanok Village.',
+        routeRec: 'Notes: Try ramen by Yeouido Han River after Moonlight E-Land Cruise • Optional Myeongdong shopping.'
+      },
+      {
+        id: 'day3',
+        short: 'Day 3 • Nov 27',
+        title: 'DAY 3 – NOV 27 (FRI) | Nami Island, Lotte World & Seokchon Lake',
+        subtitle: 'ITX Yongsan → Gapyeong & Nami Island → ITX Cheongnyangni → Lotte World & Seokchon Lake',
+        luggageMode: '100% Hands-Free (Bags Stay at Fairfield)',
+        luggageTip: 'Take Blue Line 1 from Yeongdeungpo to Yongsan (7:00–7:20 AM) for the 7:51 AM ITX train to Gapyeong! On return, ride ITX from Gapyeong to Cheongnyangni (13:28–14:07) straight toward Jamsil.',
+        routeRec: 'Notes: Hallyu K-Star Road (if not done Day 1) • Street food Myeongdong / DDP explore • Yeongdeungpo stroll • I’Park Mall Yongsan • Daiso.'
+      },
+      {
+        id: 'day4',
+        short: 'Day 4 • Nov 28',
+        title: 'DAY 4 – NOV 28 (SAT) | Travel to Busan, Lotte Busan & Gwangalli Beach',
+        subtitle: 'Yeongdeungpo Free Morning → KTX033 (12:16 PM) → Moonbay Hotel → Lotte Busan → Gwangalli',
+        luggageMode: 'Line 1 → KTX033 (12:16 PM) → Taxi to Moonbay Hotel',
+        luggageTip: 'Check out at 10:30 AM, ride Line 1 to Seoul Station (11:00–11:25 AM), exchange/rest before 12:16 PM KTX to Busan (arrives 14:58), then take a taxi (~₩12,000) to Moonbay Hotel to drop bags.',
+        routeRec: 'Recos: Morning walk at Yeongdeungpo Park / areas around hotel • Explore Marvel collection at Lotte Busan (Seomyeon) • Dinner at Gwangalli Beach.'
+      },
+      {
+        id: 'day5',
+        short: 'Day 5 • Nov 29',
+        title: 'DAY 5 – NOV 29 (SUN) | Busan Klook Tour & Busan Christmas Village',
+        subtitle: 'Haeundae Blueline Park → Oryukdo Skywalk → Huinnyeoul → Gamcheon → Busan Christmas Village',
+        luggageMode: '100% Hands-Free (Klook Tour Van)',
+        luggageTip: 'Take a taxi (7:25–7:45 AM, ~₩8,000) to Haeundae Station Exit 5 so you arrive at least 10 mins before the 8:20 AM Klook Tour departure (Ref: WBP740606).',
+        routeRec: 'Notes: Tour drops off at Busan Christmas Village (16:00–17:15) • Optional evening visit to Haeundae Beach.'
+      },
+      {
+        id: 'day6',
+        short: 'Day 6 • Nov 30',
+        title: 'DAY 6 – NOV 30 (MON) | Cheongsapo Station, Travel to Seoul, Cheerluv Cafe & Hongdae',
+        subtitle: 'Cheongsapo Station → Moonbay Breakfast & Check-Out → KTX036 (12:34 PM) → Hotel GMS → Cheerluv Cafe → Hongdae',
+        luggageMode: 'Morning Hands-Free → Taxi to Busan KTX036 → Hotel GMS Seoul',
+        luggageTip: 'Visit Cheongsapo Station early morning (6:45–8:45 AM) hands-free, return for hotel breakfast (8:50–9:30), relax, check out at 11:00 AM, and take a taxi (11:15–11:45) to Busan Station for 12:34 PM KTX036.',
+        routeRec: 'Free time notes: Hongik Univ station exit 3 - Goods moment (manhwa merch) • Free time, Mangwon market • Daiso shopping, Myeongdong shopping.'
+      },
+      {
+        id: 'day7',
+        short: 'Day 7 • Dec 1',
+        title: 'DAY 7 – DEC 1 (TUE) | Suwon Day Trip, Airport Limousine & Flight Home (5J 187)',
+        subtitle: 'Check Out & Leave Bags → ITX to Suwon (12:19 PM) → Hwaseong → Starfield → Airport Bus → ICN T1 Flight (02:15 AM)',
+        luggageMode: 'Leave Luggage at Hotel GMS → Airport Limousine Bus (19:05) → ICN T1 Check-In',
+        luggageTip: 'Check out at 11:30 AM and leave bags at Hotel GMS! Take 12:19 PM ITX to Suwon, return by 18:02, pick up bags at 18:50, take the 19:05 Airport Limousine (₩34,000 via T-Money) to ICN T1 (20:05), then scan tax-free receipts before 5J 187 bag drop (opens 11:15 PM, departs 02:15 AM Dec 2).',
+        routeRec: 'Departure Flow: Airport Limousine (19:05–20:05) → ICN T1 Tax Refund Kiosks → Cebu Pacific 5J 187 Bag Drop (Ref: TH512C, opens 23:15) → Flight Home 02:15 AM → Lands NAIA T3 05:45 AM.'
+      }
+    ];
+
+    const DEFAULT_ITEMS = [
+      // DAY 1 - NOV 25 (image_14d5c6.png)
+      { id: 'd1_1', group: 'day1', tab: 'itinerary', time: '05:20', title: 'Arrival in Incheon T1 — Cebu Pacific 5J 186 (Ref: HRIESB)', notes: 'Seats: Mike 11B, Angelu 11A (GO Easy • 20kg checked bag each). Lands at Incheon T1 at 5:20 AM.', routeTip: 'Route: NAIA T3 Departure → Incheon T1 Arrivals (1F).', mapQuery: 'Incheon International Airport Terminal 1', tag: 'Ref: HRIESB', done: false, doneBy: null, doneAt: null },
+      { id: 'd1_2', group: 'day1', tab: 'itinerary', time: '05:20 – 06:59', title: 'Settle, get Climate Card. Quick breakfast. Load T-Money (Incheon)', notes: 'Immigration, get luggage, quick food, pick up Climate Card (1F West Desk across from Exit 13), load T-Money, change to Heattech, and get Airport Limousine tickets.', routeTip: 'Route: ICN T1 Arrivals → West Desk (Exit 13) for Climate Card → CU/GS25 for T-Money → Airport Limousine #6007.', mapQuery: 'Incheon International Airport Terminal 1', tag: 'Incheon', done: false, doneBy: null, doneAt: null },
+      { id: 'd1_3', group: 'day1', tab: 'itinerary', time: '06:59 – 08:30', title: 'Incheon to Hotel — Airport Limousine 6007 (₩34,000)', notes: '90 mins travel • Next bus: 7:39 AM (if taking 7:39, adjust all itinerary by +40 mins, cut Myeongdong or COEX Aquarium time, or check in hotel in the afternoon).', routeTip: 'Route: Bus airport limousine 6007 - 6:59 T1 departure, alight in Fairfield.', mapQuery: 'Fairfield by Marriott Seoul', tag: '₩34,000 • 90m', done: false, doneBy: null, doneAt: null },
+      { id: 'd1_4', group: 'day1', tab: 'itinerary', time: '08:30 – 09:00', title: 'Fairfield Hotel — Drop off luggage in hotel before check in', notes: '30 mins stay • Yeongdeungpo.', routeTip: 'Route: Fairfield by Marriott Seoul Lobby Concierge.', mapQuery: 'Fairfield by Marriott Seoul', tag: 'Yeongdeungpo', done: false, doneBy: null, doneAt: null },
+      { id: 'd1_5', group: 'day1', tab: 'itinerary', time: '09:00 – 09:30', title: 'Hotel to Ssada Gimbap', notes: '30 mins travel.', routeTip: 'Route: Yeongdeungpo -> City Hall (Blue, Line 1), City Hall -> Euljiro 1 (Green, Line 2), walk.', mapQuery: 'Ssada Gimbap Euljiro Seoul', tag: '30m Transit', done: false, doneBy: null, doneAt: null },
+      { id: 'd1_6', group: 'day1', tab: 'itinerary', time: '09:30 – 10:15', title: 'Ssada Gimbap — Brunch (Euljiro) • ₩18,000', notes: '45 mins stay • Brunch, open 24 hrs.', routeTip: 'Route: Euljiro 1-ga near Myeongdong.', mapQuery: 'Ssada Gimbap Euljiro Seoul', tag: '₩18,000 • Brunch', done: false, doneBy: null, doneAt: null },
+      { id: 'd1_7', group: 'day1', tab: 'itinerary', time: '10:15 – 11:00', title: 'Explore in Myeongdong', notes: '45 mins stay • Stroll, shopping.', routeTip: 'Route: Walk approx 9 mins from Ssada Gimbap.', mapQuery: 'Myeongdong Night Market Seoul', tag: 'Myeongdong', done: false, doneBy: null, doneAt: null },
+      { id: 'd1_8', group: 'day1', tab: 'itinerary', time: '11:00 – 11:15', title: 'Travel to Changdeokgung Palace', notes: '15 mins travel.', routeTip: 'Route: Myeongdong -> Chungmuro (Light Blue, Line 4), Chungmuro -> Anguk (Orange, Line 3), Walk.', mapQuery: 'Changdeokgung Palace Seoul', tag: '15m Transit', done: false, doneBy: null, doneAt: null },
+      { id: 'd1_9', group: 'day1', tab: 'itinerary', time: '11:15 – 12:30', title: 'Changdeokgung Palace (Jongno) — DSP', notes: '90 mins stay • Palace, 9:00 AM open. Activates 72h Mobile DSP!', routeTip: 'Route: Jongno / Anguk Station.', mapQuery: 'Changdeokgung Palace Seoul', tag: 'DSP', done: false, doneBy: null, doneAt: null },
+      { id: 'd1_10', group: 'day1', tab: 'itinerary', time: '12:30 – 13:20', title: 'Travel to Over the Rainbow (Mamamoo company)', notes: '50 mins travel.', routeTip: 'Route: Walk, Anguk -> Euljiro 3 (Orange, Line 3), Euljiro 3 -> Guui (Green, Line 2).', mapQuery: 'Over the Rainbow RBW Guui Seoul', tag: '50m Transit', done: false, doneBy: null, doneAt: null },
+      { id: 'd1_11', group: 'day1', tab: 'itinerary', time: '13:20 – 14:15', title: 'Over the Rainbow (Gwangjin) • ₩18,000', notes: '55 mins stay • Mamamoo, get Solar photocard and drink, Kanghyun cupsleeve birthday event.', routeTip: 'Route: Guui Station (Green, Line 2).', mapQuery: 'Over the Rainbow RBW Guui Seoul', tag: '₩18,000 • OTR', done: false, doneBy: null, doneAt: null },
+      { id: 'd1_12', group: 'day1', tab: 'itinerary', time: '14:15 – 15:15', title: 'Travel to Hotel, check in', notes: '60 mins travel • Check Naver Map for fastest route.', routeTip: 'Route: Guui -> Sindorim (Green, Line 2), Sindorim -> Yeongdeungpo (Blue, Line 1), walk.', mapQuery: 'Fairfield by Marriott Seoul', tag: '60m Transit', done: false, doneBy: null, doneAt: null },
+      { id: 'd1_13', group: 'day1', tab: 'itinerary', time: '15:15 – 16:00', title: 'Check in, settle (Yeongdeungpo)', notes: '45 mins • Quick rest, retouch at Fairfield by Marriott Seoul.', routeTip: 'Route: Fairfield by Marriott Seoul.', mapQuery: 'Fairfield by Marriott Seoul', tag: 'Yeongdeungpo', done: false, doneBy: null, doneAt: null },
+      { id: 'd1_14', group: 'day1', tab: 'itinerary', time: '16:00 – 16:50', title: 'Travel to COEX', notes: '50 mins travel.', routeTip: 'Route: Yeongdeungpo -> Noryangjin (Blue, Line 1), walk, Noryangjin -> Bongeunsa (Dark Yellow, Line 9), walk.', mapQuery: 'COEX Aquarium Seoul', tag: '50m Transit', done: false, doneBy: null, doneAt: null },
+      { id: 'd1_15', group: 'day1', tab: 'itinerary', time: '16:50 – 18:00', title: 'COEX Aquarium (Gangnam) — DSP', notes: '70 mins stay • Free entry with Discover Seoul Pass.', routeTip: 'Route: Bongeunsa Station (Line 9) / Starfield COEX Mall.', mapQuery: 'COEX Aquarium Seoul', tag: 'DSP', done: false, doneBy: null, doneAt: null },
+      { id: 'd1_16', group: 'day1', tab: 'itinerary', time: '18:00 – 18:45', title: 'COEX Starfield Library / Mall (Gangnam)', notes: '45 mins stay • Photos, can be shorter time.', routeTip: 'Route: Starfield COEX Mall.', mapQuery: 'Starfield Library COEX Mall', tag: 'Gangnam', done: false, doneBy: null, doneAt: null },
+      { id: 'd1_17', group: 'day1', tab: 'itinerary', time: '18:45 – 19:15', title: 'Travel to dinner (Bbqyul or Samyukga)', notes: '20 mins travel.', routeTip: 'Route: Bongeunsa -> Sinnonhyeon (Dark Yellow, Line 9), Sinnonhyeon -> Gangnam (Red, Shinbundang Line).', mapQuery: 'Gangnam Station Seoul', tag: '20m Transit', done: false, doneBy: null, doneAt: null },
+      { id: 'd1_18', group: 'day1', tab: 'itinerary', time: '19:15', title: 'Dinner w/ Pam / free time (Bbqyul or Samyukga)', notes: 'Gangnam • Note: Add Hallyu K-Star Road optional if have time (20 mins from COEX via train).', routeTip: 'Route: Gangnam Station area.', mapQuery: 'Samyukga Gangnam Seoul', tag: 'Gangnam Dinner', done: false, doneBy: null, doneAt: null },
+
+      // DAY 2 - NOV 26 (image_14d642.png)
+      { id: 'd2_1', group: 'day2', tab: 'itinerary', time: '07:00 – 07:45', title: 'Prep, Breakfast convenience store • ₩10,000', notes: '45 mins • Quick convenience store breakfast near Fairfield Seoul.', routeTip: 'Route: Yeongdeungpo convenience store.', mapQuery: 'Fairfield by Marriott Seoul', tag: '₩10,000 • Breakfast', done: false, doneBy: null, doneAt: null },
+      { id: 'd2_2', group: 'day2', tab: 'itinerary', time: '07:45 – 08:20', title: 'Travel to Gwanghwamun', notes: '35 mins travel.', routeTip: 'Route: Walk to Singil station (10 min), Singil -> Gwanghwamun (Purple, Line 5).', mapQuery: 'Gwanghwamun Station Seoul', tag: '35m Transit', done: false, doneBy: null, doneAt: null },
+      { id: 'd2_3', group: 'day2', tab: 'itinerary', time: '08:20 – 08:30', title: 'Walk around Gwanghwamun, Walk to Daehan Hanbok (Jongno)', notes: '15 mins stay • Walk.', routeTip: 'Route: Walk from Gwanghwamun to Daehan Hanbok.', mapQuery: 'Daehan Hanbok Gyeongbokgung Seoul', tag: 'Jongno', done: false, doneBy: null, doneAt: null },
+      { id: 'd2_4', group: 'day2', tab: 'itinerary', time: '08:30 – 09:15', title: 'Daehan Hanbok — Hanbok Rental (DSP)', notes: '45 mins stay • Covered with Discover Seoul Pass.', routeTip: 'Route: Daehan Hanbok near Gyeongbokgung.', mapQuery: 'Daehan Hanbok Gyeongbokgung Seoul', tag: 'DSP', done: false, doneBy: null, doneAt: null },
+      { id: 'd2_5', group: 'day2', tab: 'itinerary', time: '09:15 – 11:00', title: 'Walk to and around Gyeongbukgung Palace (Jongno) — DSP', notes: '105 mins stay • Palace, exit by 11:10.', routeTip: 'Route: Gyeongbukgung Palace.', mapQuery: 'Gyeongbokgung Palace Seoul', tag: 'DSP', done: false, doneBy: null, doneAt: null },
+      { id: 'd2_6', group: 'day2', tab: 'itinerary', time: '11:00 – 11:15', title: 'Daehan Hanbok — Remove rental hanbok', notes: '15 mins • Return hanbok before heading to Eunpyeong.', routeTip: 'Route: Daehan Hanbok.', mapQuery: 'Daehan Hanbok Gyeongbokgung Seoul', tag: 'Return Hanbok', done: false, doneBy: null, doneAt: null },
+      { id: 'd2_7', group: 'day2', tab: 'itinerary', time: '11:15 – 12:05', title: 'Travel to Eunpyeong Hanok Village', notes: '50 mins travel.', routeTip: 'Route: Walk, Gyeongbokgung -> Yeonsinnae (Orange, Line 3), Bus 12106 / 7211 Yeonsinnae -> Hana High School (Green).', mapQuery: 'Eunpyeong Hanok Village Seoul', tag: '50m Transit', done: false, doneBy: null, doneAt: null },
+      { id: 'd2_8', group: 'day2', tab: 'itinerary', time: '12:05 – 14:15', title: 'Eunpyeong Hanok Village, 1in1jan Cafe Lunch (Eunpyeong) • ₩70,000', notes: '130 mins stay • Hanok Village, Lunch at 1in1jan cafe.', routeTip: 'Route: Eunpyeong Hanok Village / 1in1jan.', mapQuery: '1in1jan Eunpyeong Hanok Village Seoul', tag: '₩70,000 • Lunch', done: false, doneBy: null, doneAt: null },
+      { id: 'd2_9', group: 'day2', tab: 'itinerary', time: '14:15 – 14:55', title: 'Travel to Chungmuro', notes: '40 mins travel.', routeTip: 'Route: Bus 12464 / 701 or 709 Hana High School (Blue) -> Yeonsinnae Station, Yeonsinnae Station -> Chungmuro (Orange, Line 3).', mapQuery: 'Chungmuro Station Seoul', tag: '40m Transit', done: false, doneBy: null, doneAt: null },
+      { id: 'd2_10', group: 'day2', tab: 'itinerary', time: '14:55 – 15:20', title: 'Chungmuro to N Seoul Tower', notes: '25 mins travel • Bus schedules: 14:53–15:17 (01A), 14:57–15:20 (01B), 15:04–15:27 (01B), 15:07–15:31 (01A).', routeTip: 'Route: Bus 02153 Chungmuro (01B) -> N Seoul Tower.', mapQuery: 'N Seoul Tower', tag: '25m Bus', done: false, doneBy: null, doneAt: null },
+      { id: 'd2_11', group: 'day2', tab: 'itinerary', time: '15:20 – 16:45', title: 'N Seoul Tower (Namsan) — DSP', notes: '85 mins stay • Can skip observatory -> Naksan park other day.', routeTip: 'Route: N Seoul Tower Plaza & Observatory.', mapQuery: 'N Seoul Tower', tag: 'DSP', done: false, doneBy: null, doneAt: null },
+      { id: 'd2_12', group: 'day2', tab: 'itinerary', time: '16:45 – 17:15', title: 'Travel to Chungmuro', notes: '30 mins travel • Bus schedules: 16:49–17:15 (01B), 16:50–17:18 (01A), 16:56–17:27 (01A), 17:05–17:32 (01B).', routeTip: 'Route: N Seoul Tower (01B) -> Chungmuro Station.', mapQuery: 'Chungmuro Station Seoul', tag: '30m Bus', done: false, doneBy: null, doneAt: null },
+      { id: 'd2_13', group: 'day2', tab: 'itinerary', time: '17:15 – 17:45', title: 'Chungmuro to Yeouido Seoul E-Land Cruise', notes: '35 mins travel.', routeTip: 'Route: Chungmuro -> Jongno 3 (Orange, Line 3), Jongno 3 -> Yeouinaru (Purple, Line 5).', mapQuery: 'Yeouinaru Station Seoul', tag: '35m Transit', done: false, doneBy: null, doneAt: null },
+      { id: 'd2_14', group: 'day2', tab: 'itinerary', time: '17:45 – 19:00', title: 'Wait for E-Land Cruise, change ticket, snack around Yeouido', notes: '75 mins stay • Han River, photos, exchange DSP QR for physical boarding ticket.', routeTip: 'Route: Yeouido Hangang Park / E-Land Cruise Pier 1.', mapQuery: 'Eland Cruise Yeouido Seoul', tag: 'Yeouido', done: false, doneBy: null, doneAt: null },
+      { id: 'd2_15', group: 'day2', tab: 'itinerary', time: '19:00 – 20:10', title: 'Moonlight E-Land Cruise (Yeouido) — DSP', notes: '70 mins stay • Free evening cruise with Discover Seoul Pass.', routeTip: 'Route: Yeouido E-Land Cruise.', mapQuery: 'Eland Cruise Yeouido Seoul', tag: 'DSP', done: false, doneBy: null, doneAt: null },
+      { id: 'd2_16', group: 'day2', tab: 'itinerary', time: '20:10', title: 'Dinner, Free time (Try ramen by Yeouido Han River / Myeongdong shopping)', notes: 'Notes: Try ramen by Yeouido Han River • Myeongdong shopping.', routeTip: 'Route: Yeouido Hangang Park -> Singil / Yeongdeungpo (or Line 5/2 to Myeongdong).', mapQuery: 'Yeouido Hangang Park Seoul', tag: 'Dinner / Free', done: false, doneBy: null, doneAt: null },
+
+      // DAY 3 - NOV 27 (image_14d6a0.png)
+      { id: 'd3_1', group: 'day3', tab: 'itinerary', time: '06:15 – 07:00', title: 'Prep, Breakfast • ₩10,000', notes: '45 mins • Early morning prep & breakfast.', routeTip: 'Route: Fairfield Seoul / Yeongdeungpo.', mapQuery: 'Fairfield by Marriott Seoul', tag: '₩10,000', done: false, doneBy: null, doneAt: null },
+      { id: 'd3_2', group: 'day3', tab: 'itinerary', time: '07:00 – 07:20', title: 'Travel to Yongsan Station', notes: '20 mins travel • Yongsan station to Gapyeong for Nami Island.', routeTip: 'Route: Yeongdeungpo -> Yongsan (Blue, Line 1).', mapQuery: 'Yongsan Station Seoul', tag: '20m Transit', done: false, doneBy: null, doneAt: null },
+      { id: 'd3_3', group: 'day3', tab: 'itinerary', time: '07:20 – 07:51', title: 'In Yongsan station, waiting, eat? (Yongsan)', notes: '31 mins stay • Grab snacks/coffee at Yongsan Station before ITX.', routeTip: 'Route: Yongsan Station Concourse.', mapQuery: 'Yongsan Station Seoul', tag: 'Yongsan', done: false, doneBy: null, doneAt: null },
+      { id: 'd3_4', group: 'day3', tab: 'itinerary', time: '07:51 – 08:50', title: 'Travel to Gapyeong (ITX-Cheongchun)', notes: '59 mins travel • KTX / ITX - BOOK KORAIL.', routeTip: 'Route: ITX - Yongsan -> Gapyeong.', mapQuery: 'Gapyeong Station', tag: '59m ITX', done: false, doneBy: null, doneAt: null },
+      { id: 'd3_5', group: 'day3', tab: 'itinerary', time: '08:50 – 09:10', title: 'Check for Taxi & Taxi to Nami Ferry (Gapyeong) • ₩6,000', notes: '10 mins wait + 10 mins taxi.', routeTip: 'Route: Gapyeong Station Taxi Stand -> Nami Island Wharf.', mapQuery: 'Nami Island Ferry Wharf', tag: '₩6,000 • Taxi', done: false, doneBy: null, doneAt: null },
+      { id: 'd3_6', group: 'day3', tab: 'itinerary', time: '09:20 – 09:30', title: 'Nami Ferry to Nami Island — DSP', notes: '10 mins ferry • Covered with Discover Seoul Pass.', routeTip: 'Route: Gapyeong Wharf -> Nami Island.', mapQuery: 'Nami Island Ferry Wharf', tag: 'DSP', done: false, doneBy: null, doneAt: null },
+      { id: 'd3_7', group: 'day3', tab: 'itinerary', time: '09:30 – 12:30', title: 'Nami Island (Include lunch time, 45 mins) • ₩40,000', notes: '180 mins stay • Explore Nami Island & have lunch (45 mins).', routeTip: 'Route: Nami Island.', mapQuery: 'Nami Island Gapyeong', tag: '₩40,000 • 3h', done: false, doneBy: null, doneAt: null },
+      { id: 'd3_8', group: 'day3', tab: 'itinerary', time: '12:30 – 12:55', title: 'Nami Ferry from Nami Island & Taxi to Gapyeong Station • ₩6,000', notes: '10 mins ferry + 5 mins look for taxi + 10 mins taxi • Set Gapyeong Station -> Lotte World Adventure pin on Naver Maps.', routeTip: 'Route: Nami Island -> Ferry -> Taxi to Gapyeong Station.', mapQuery: 'Gapyeong Station', tag: '₩6,000 • Return', done: false, doneBy: null, doneAt: null },
+      { id: 'd3_9', group: 'day3', tab: 'itinerary', time: '12:55 – 13:28', title: 'In Gapyeong Station, buy ticket, wait', notes: '33 mins • Buy ITX return ticket onsite.', routeTip: 'Route: Gapyeong Station.', mapQuery: 'Gapyeong Station', tag: 'Book Onsite', done: false, doneBy: null, doneAt: null },
+      { id: 'd3_10', group: 'day3', tab: 'itinerary', time: '13:28 – 14:07', title: 'Travel to Seoul, intercity, Gapyeong -> Cheongnyangni • ₩11,400', notes: '39 mins travel • Book onsite.', routeTip: 'Route: ITX - Gapyeong -> Cheongnyangni.', mapQuery: 'Cheongnyangni Station Seoul', tag: '₩11,400 • ITX', done: false, doneBy: null, doneAt: null },
+      { id: 'd3_11', group: 'day3', tab: 'itinerary', time: '14:10 – 14:50', title: 'Cheongnyangni to Lotte World Adventure (DSP)', notes: '30 mins transit + 10 mins walk.', routeTip: 'Route: Cheongnyangni -> Wangsimni (Light green, Gyeongui-Jungang Line), Wangsimni -> Jamsil (Green, Line 2), Walk.', mapQuery: 'Lotte World Adventure Seoul', tag: 'DSP', done: false, doneBy: null, doneAt: null },
+      { id: 'd3_12', group: 'day3', tab: 'itinerary', time: '14:50 – 16:50', title: 'Lotte World Adventure (Theme Park) — DSP', notes: '120 mins stay • Redeem physical ticket at South Gate Foreign Ticket Booth with DSP QR.', routeTip: 'Route: Lotte World Adventure, Jamsil.', mapQuery: 'Lotte World Adventure Seoul', tag: 'DSP • 2h', done: false, doneBy: null, doneAt: null },
+      { id: 'd3_13', group: 'day3', tab: 'itinerary', time: '16:50 – 17:20', title: 'Seokchon Lake', notes: '30 mins stay • Walk right outside Lotte World.', routeTip: 'Route: Seokchon Lake Park, Jamsil.', mapQuery: 'Seokchon Lake Seoul', tag: '30m Stroll', done: false, doneBy: null, doneAt: null },
+      { id: 'd3_14', group: 'day3', tab: 'itinerary', time: '17:20', title: 'Free Time — Lotte Mall & Evening Options', notes: 'Notes: Hallyu K-Star Road if not done in Day 1 (Gangnam) • Street food Myeongdong / DDP area explore • Stroll around Yeongdeungpo area • Dinner options • I’Park Mall Yongsan • Daiso, Myeongdong shopping.', routeTip: 'Route: Lotte World Mall / Jamsil Station (Line 2).', mapQuery: 'Lotte World Mall Seoul', tag: 'Free Time', done: false, doneBy: null, doneAt: null },
+
+      // DAY 4 - NOV 28 (image_14d6de.png)
+      { id: 'd4_1', group: 'day4', tab: 'itinerary', time: '07:00 – 10:30', title: 'Free time morning, check for brunch or early lunch', notes: '210 mins • Recos: Yeongdeungpo Park, areas around hotel.', routeTip: 'Route: Fairfield Seoul / Yeongdeungpo Park.', mapQuery: 'Yeongdeungpo Park Seoul', tag: 'Free Morning', done: false, doneBy: null, doneAt: null },
+      { id: 'd4_2', group: 'day4', tab: 'itinerary', time: '10:30 – 11:00', title: 'Check out hotel (Fairfield by Marriott Seoul)', notes: '30 mins • Pack suitcases and check out.', routeTip: 'Route: Fairfield by Marriott Seoul Lobby.', mapQuery: 'Fairfield by Marriott Seoul', tag: 'Check-Out', done: false, doneBy: null, doneAt: null },
+      { id: 'd4_3', group: 'day4', tab: 'itinerary', time: '11:00 – 11:25', title: 'Travel to Seoul Station', notes: '25 mins travel.', routeTip: 'Route: Yeongdeungpo -> Seoul Station (Blue, Line 1).', mapQuery: 'Seoul Station KTX', tag: '25m Transit', done: false, doneBy: null, doneAt: null },
+      { id: 'd4_4', group: 'day4', tab: 'itinerary', time: '11:25 – 12:16', title: 'Exchange to physical ticket, rest (Seoul Station)', notes: '51 mins • Can check if there is food for the train.', routeTip: 'Route: Seoul Station KTX Concourse.', mapQuery: 'Seoul Station KTX', tag: '51m Buffer', done: false, doneBy: null, doneAt: null },
+      { id: 'd4_5', group: 'day4', tab: 'itinerary', time: '12:16 – 14:58', title: 'Travel to Busan — KTX033 (Car 16, Seats 11A & 11B)', notes: '162 mins travel • Tickets: 80021-1031-10111-22 & 80021-1031-10112-01.', routeTip: 'Route: KTX - Seoul Station -> Busan Station.', mapQuery: 'Busan Station KTX', tag: 'KTX033 • Car 16', done: false, doneBy: null, doneAt: null },
+      { id: 'd4_6', group: 'day4', tab: 'itinerary', time: '14:58 – 15:45', title: 'Settle, book taxi & Taxi to Moonbay Hotel (17m + 30m)', notes: '17 mins settle + 30 mins taxi ride to Gwangan.', routeTip: 'Route: Busan Station Taxi Stand -> Gwangalli Moon Bay Hotel.', mapQuery: 'Gwangalli Moon Bay Hotel Busan', tag: '30m Taxi', done: false, doneBy: null, doneAt: null },
+      { id: 'd4_7', group: 'day4', tab: 'itinerary', time: '15:45 – 16:15', title: 'Moonbay Hotel — Leave luggage (Gwangan) • ₩12,000', notes: '30 mins • Taxi ~₩12,000. Near Gwangalli beach, or check if early check-in.', routeTip: 'Route: Gwangalli Moon Bay Hotel (Agoda: 1792427263).', mapQuery: 'Gwangalli Moon Bay Hotel Busan', tag: '₩12,000 • Gwangan', done: false, doneBy: null, doneAt: null },
+      { id: 'd4_8', group: 'day4', tab: 'itinerary', time: '16:15 – 16:45', title: 'Go to Lotte Busan', notes: '30 mins travel.', routeTip: 'Route: Walk, Geumnyeonsan -> Seomyeon (Green, Line 2).', mapQuery: 'Lotte Department Store Busan Main', tag: '30m Transit', done: false, doneBy: null, doneAt: null },
+      { id: 'd4_9', group: 'day4', tab: 'itinerary', time: '16:45 – 18:15', title: 'Lotte Busan (Seomyeon)', notes: '90 mins stay • Explore, Marvel collection, get snack.', routeTip: 'Route: Lotte Department Store Busan Main (Seomyeon).', mapQuery: 'Lotte Department Store Busan Main', tag: 'Busan • 90m', done: false, doneBy: null, doneAt: null },
+      { id: 'd4_10', group: 'day4', tab: 'itinerary', time: '18:15 – 19:15', title: 'Return to hotel & Check in hotel (30m + 30m)', notes: '30 mins travel + 30 mins check in (Front desk closes at 9:00 PM!).', routeTip: 'Route: Seomyeon -> Geumnyeonsan (Green, Line 2) -> Moonbay Hotel.', mapQuery: 'Gwangalli Moon Bay Hotel Busan', tag: 'Check-In', done: false, doneBy: null, doneAt: null },
+      { id: 'd4_11', group: 'day4', tab: 'itinerary', time: '19:15', title: 'Free time, explore in Gwangalli beach, dinner (Gwangalli)', notes: 'Enjoy Gwangan Bridge night lights and dinner along Gwangalli Beach.', routeTip: 'Route: Gwangalli Beachfront.', mapQuery: 'Gwangalli Beach Busan', tag: 'Gwangalli', done: false, doneBy: null, doneAt: null },
+
+      // DAY 5 - NOV 29 (image_14d985.png)
+      { id: 'd5_1', group: 'day5', tab: 'itinerary', time: '06:00 – 07:15', title: 'Prep, quick breakfast convenience store', notes: '75 mins • Alternative: leave earlier, find a convenience store near Haeundae Station Exit 5.', routeTip: 'Route: Gwangalli convenience store.', mapQuery: 'Gwangalli Moon Bay Hotel Busan', tag: 'Breakfast', done: false, doneBy: null, doneAt: null },
+      { id: 'd5_2', group: 'day5', tab: 'itinerary', time: '07:15 – 07:45', title: 'Book taxi & Taxi to Haeundae Station 5 • ₩8,000', notes: '10 mins book + 20 mins taxi ride.', routeTip: 'Route: Taxi from Moonbay Hotel -> Haeundae Station Exit 5.', mapQuery: 'Haeundae Station Exit 5 Busan', tag: '₩8,000 • Taxi', done: false, doneBy: null, doneAt: null },
+      { id: 'd5_3', group: 'day5', tab: 'itinerary', time: '07:45 – 08:10', title: 'Waiting at Haeundae Station 5 Klook Tour', notes: '25 mins • Be at departure pick up point 10 mins before 8:20 (Ref: WBP740606, KTourStory +82-10-9650-8388).', routeTip: 'Route: Haeundae Station Exit 5 meetup.', mapQuery: 'Haeundae Station Exit 5 Busan', tag: 'Ref: WBP740606', done: false, doneBy: null, doneAt: null },
+      { id: 'd5_4', group: 'day5', tab: 'itinerary', time: '08:20 – 09:30', title: 'Travel to & Visit Haeundae Blueline Park (10m + 60m)', notes: 'Start of Klook Tour • Sky Capsule ride along the coast.', routeTip: 'Route: Klook tour van -> Haeundae Blueline Park.', mapQuery: 'Haeundae Blueline Park Mipo Station', tag: 'Klook Tour', done: false, doneBy: null, doneAt: null },
+      { id: 'd5_5', group: 'day5', tab: 'itinerary', time: '09:30 – 10:50', title: 'Travel to & Visit Oryukdo Skywalk (30m + 50m)', notes: 'Disclaimer: May change depending on weather.', routeTip: 'Route: Klook tour -> Oryukdo Skywalk.', mapQuery: 'Oryukdo Skywalk Busan', tag: 'Klook Tour', done: false, doneBy: null, doneAt: null },
+      { id: 'd5_6', group: 'day5', tab: 'itinerary', time: '10:50 – 12:40', title: 'Travel to & Visit Huinnyeoul Culture Village (40m + 70m)', notes: 'Cliffside coastal village & ocean views.', routeTip: 'Route: Klook tour -> Huinnyeoul Culture Village.', mapQuery: 'Huinnyeoul Culture Village Busan', tag: 'Klook Tour', done: false, doneBy: null, doneAt: null },
+      { id: 'd5_7', group: 'day5', tab: 'itinerary', time: '12:40 – 14:20', title: 'Lunch Break', notes: '100 mins • Own expense during Klook tour.', routeTip: 'Route: Klook tour lunch stop.', mapQuery: 'Jagalchi Market Busan', tag: 'Lunch', done: false, doneBy: null, doneAt: null },
+      { id: 'd5_8', group: 'day5', tab: 'itinerary', time: '14:20 – 16:00', title: 'Travel to & Visit Gamcheon Culture Village (20m + 100m)', notes: 'Colorful hillside village & Little Prince photo spot.', routeTip: 'Route: Klook tour -> Gamcheon Culture Village.', mapQuery: 'Gamcheon Culture Village Busan', tag: 'Klook Tour', done: false, doneBy: null, doneAt: null },
+      { id: 'd5_9', group: 'day5', tab: 'itinerary', time: '16:00 – 17:15', title: 'Drop off to Busan Christmas Village (Klook tour)', notes: '75 mins • Tour drop-off at Nampo / Busan Christmas Village (can also claim Lotte Gwangbok freebie Ref: TMZ226563 nearby!).', routeTip: 'Route: Klook tour drop-off -> Busan Christmas Village (Nampo).', mapQuery: 'Nampo-dong Busan', tag: 'Klook Drop-Off', done: false, doneBy: null, doneAt: null },
+      { id: 'd5_10', group: 'day5', tab: 'itinerary', time: '17:15', title: 'Free time (Notes: Haeundae beach)', notes: 'Notes: Haeundae beach / Nampo BIFF Square street food.', routeTip: 'Route: Nampo -> Seomyeon -> Haeundae / Gwangalli (Line 1 -> Line 2).', mapQuery: 'Haeundae Beach Busan', tag: 'Free Time', done: false, doneBy: null, doneAt: null },
+
+      // DAY 6 - NOV 30 (image_14ed03.png)
+      { id: 'd6_1', group: 'day6', tab: 'itinerary', time: '06:00 – 06:45', title: 'Early Prep, quick breakfast convenience store food', notes: '45 mins • Early morning prep before heading to Cheongsapo.', routeTip: 'Route: Gwangalli convenience store.', mapQuery: 'Gwangalli Moon Bay Hotel Busan', tag: 'Early Prep', done: false, doneBy: null, doneAt: null },
+      { id: 'd6_2', group: 'day6', tab: 'itinerary', time: '06:45 – 07:35', title: 'Travel to Haeundae Blue Line Cheongsapo Station', notes: '50 mins travel • Scenic view along the coast.', routeTip: 'Route: Geumnyeonsan -> Jangsan (Green, Line 2), Bus 907-A Jangsan Station -> Blue line park.', mapQuery: 'Cheongsapo Station Busan', tag: '50m Transit', done: false, doneBy: null, doneAt: null },
+      { id: 'd6_3', group: 'day6', tab: 'itinerary', time: '07:35 – 08:05', title: 'Cheongsapo Station', notes: '30 mins stay • Photos at Cheongsapo Daritdol / Blue Line tracks.', routeTip: 'Route: Haeundae Blueline Park Cheongsapo Station.', mapQuery: 'Cheongsapo Station Busan', tag: '30m Photos', done: false, doneBy: null, doneAt: null },
+      { id: 'd6_4', group: 'day6', tab: 'itinerary', time: '08:05 – 08:45', title: 'Travel back to hotel • ₩16,000', notes: '40 mins total • Taxi - 30 mins, ~₩16,000 back to Moonbay Hotel.', routeTip: 'Route: Taxi from Cheongsapo Station -> Gwangalli Moon Bay Hotel.', mapQuery: 'Gwangalli Moon Bay Hotel Busan', tag: '₩16,000 • Taxi', done: false, doneBy: null, doneAt: null },
+      { id: 'd6_5', group: 'day6', tab: 'itinerary', time: '08:50 – 09:30', title: 'Hotel breakfast (Moonbay Hotel)', notes: '40 mins • Simple breakfast at 2F Guest Lounge.', routeTip: 'Route: Gwangalli Moon Bay Hotel 2F.', mapQuery: 'Gwangalli Moon Bay Hotel Busan', tag: 'Breakfast', done: false, doneBy: null, doneAt: null },
+      { id: 'd6_6', group: 'day6', tab: 'itinerary', time: '09:30 – 11:00', title: 'Relax hotel & Pack Suitcases', notes: '90 mins stay • Rest and pack up before check-out.', routeTip: 'Route: Gwangalli Moon Bay Hotel.', mapQuery: 'Gwangalli Moon Bay Hotel Busan', tag: '90m Relax', done: false, doneBy: null, doneAt: null },
+      { id: 'd6_7', group: 'day6', tab: 'itinerary', time: '11:00 – 11:10', title: 'Check out hotel (Moonbay Hotel)', notes: '10 mins • Check out at front desk.', routeTip: 'Route: Gwangalli Moon Bay Hotel Lobby.', mapQuery: 'Gwangalli Moon Bay Hotel Busan', tag: 'Check-Out', done: false, doneBy: null, doneAt: null },
+      { id: 'd6_8', group: 'day6', tab: 'itinerary', time: '11:10 – 11:45', title: 'Wait for taxi (5m) & Taxi to Busan Station (30m)', notes: '5 mins wait + 30 mins taxi ride with suitcases to Busan KTX Station.', routeTip: 'Route: Gwangalli Moon Bay Hotel -> Busan Station.', mapQuery: 'Busan Station KTX', tag: '30m Taxi', done: false, doneBy: null, doneAt: null },
+      { id: 'd6_9', group: 'day6', tab: 'itinerary', time: '11:45 – 12:34', title: 'Wait in Busan station, check food', notes: '49 mins • Grab lunch/snacks for the KTX ride.', routeTip: 'Route: Busan Station KTX Concourse.', mapQuery: 'Busan Station KTX', tag: '49m Buffer', done: false, doneBy: null, doneAt: null },
+      { id: 'd6_10', group: 'day6', tab: 'itinerary', time: '12:34 – 15:00', title: 'Travel to Seoul — KTX-CheongRyong036 (Car 3, Seats 8C & 8D)', notes: '146 mins travel • Tickets: 80031-1031-10096-45 & 80031-1031-10097-78.', routeTip: 'Route: KTX - Busan Station -> Seoul Station.', mapQuery: 'Seoul Station', tag: 'KTX036 • Car 3', done: false, doneBy: null, doneAt: null },
+      { id: 'd6_11', group: 'day6', tab: 'itinerary', time: '15:00 – 15:30', title: 'Travel to hotel (Seoul Station -> Yeongdeungpo)', notes: '30 mins travel.', routeTip: 'Route: Seoul Station -> Yeongdeungpo / Singil (Blue, Line 1) -> Hotel GMS.', mapQuery: 'Hotel GMS Seoul', tag: '30m Transit', done: false, doneBy: null, doneAt: null },
+      { id: 'd6_12', group: 'day6', tab: 'itinerary', time: '15:30 – 16:30', title: 'Hotel GMS — Settle down, check in & rest (30m + 30m)', notes: '30 mins settle/check-in + 30 mins rest (Agoda ID: 1792436351).', routeTip: 'Route: Hotel GMS (867 Gyeongin-ro, Yeongdeungpo-gu).', mapQuery: 'Hotel GMS Seoul', tag: 'Agoda: 1792436351', done: false, doneBy: null, doneAt: null },
+      { id: 'd6_13', group: 'day6', tab: 'itinerary', time: '16:30 – 17:00', title: 'Go to Cheerluv cafe (Mapo)', notes: '30 mins travel.', routeTip: 'Route: Yeongdeungpo / Singil -> Sindorim -> Hongik Univ. / Mapo (Green, Line 2).', mapQuery: 'Cheerluv Cafe Mapo Seoul', tag: '30m Transit', done: false, doneBy: null, doneAt: null },
+      { id: 'd6_14', group: 'day6', tab: 'itinerary', time: '17:00 – 17:40', title: 'Cheerluv cafe (Mapo)', notes: '40 mins stay.', routeTip: 'Route: Cheerluv Cafe, Mapo-gu.', mapQuery: 'Cheerluv Cafe Mapo Seoul', tag: '40m Cafe', done: false, doneBy: null, doneAt: null },
+      { id: 'd6_15', group: 'day6', tab: 'itinerary', time: '17:40 – 18:00', title: 'Travel to Hongdae', notes: '15 mins travel.', routeTip: 'Route: Walk / transit to Hongik Univ. Station.', mapQuery: 'Hongdae Walking Street Seoul', tag: '15m Transit', done: false, doneBy: null, doneAt: null },
+      { id: 'd6_16', group: 'day6', tab: 'itinerary', time: '18:00 – 19:00', title: 'Explore in Hongdae', notes: '60 mins stay • Hongik Univ station exit 3 - Goods moment (manhwa merch) • Free time, Mangwon market • Daiso shopping, Myeongdong shopping.', routeTip: 'Route: Hongik Univ. Station Exit 3 (Goods Moment) & Hongdae Street.', mapQuery: 'Hongik Univ Station Exit 3 Seoul', tag: '60m Hongdae', done: false, doneBy: null, doneAt: null },
+
+      // DAY 7 - DEC 1 (Suwon + Airport Limousine + Flight Home Dec 2 02:15 AM)
+      { id: 'd7_1', group: 'day7', tab: 'itinerary', time: '07:00 – 10:30', title: 'Free time morning / Brunch', notes: '210 mins • Relaxed morning & brunch around Yeongdeungpo.', routeTip: 'Route: Hotel GMS / Yeongdeungpo.', mapQuery: 'Hotel GMS Seoul', tag: 'Brunch', done: false, doneBy: null, doneAt: null },
+      { id: 'd7_2', group: 'day7', tab: 'itinerary', time: '11:30 – 11:45', title: 'Check out hotel, leave luggage (Hotel GMS)', notes: '15 mins • Store suitcases at Hotel GMS concierge so you go to Suwon hands-free.', routeTip: 'Route: Hotel GMS Front Desk.', mapQuery: 'Hotel GMS Seoul', tag: 'Leave Luggage', done: false, doneBy: null, doneAt: null },
+      { id: 'd7_3', group: 'day7', tab: 'itinerary', time: '11:45 – 12:19', title: 'Walk to Yeongdeungpo station, buy ITX ticket (12:12 or 12:19) & wait', notes: '5 mins walk + 29 mins wait at Yeongdeungpo Station.', routeTip: 'Route: Walk to Yeongdeungpo Station.', mapQuery: 'Yeongdeungpo Station Seoul', tag: 'Buy ITX', done: false, doneBy: null, doneAt: null },
+      { id: 'd7_4', group: 'day7', tab: 'itinerary', time: '12:19 – 12:33', title: 'Travel to Suwon (ITX)', notes: '14 mins fast ITX ride!', routeTip: 'Route: ITX - Yeongdeungpo -> Suwon.', mapQuery: 'Suwon Station', tag: '14m ITX', done: false, doneBy: null, doneAt: null },
+      { id: 'd7_5', group: 'day7', tab: 'itinerary', time: '12:33 – 13:30', title: 'Settle down & Eat lunch Suwon Lotteria', notes: '7 mins settle + 50 mins lunch at Suwon Lotteria.', routeTip: 'Route: Suwon Station Lotteria.', mapQuery: 'Suwon Station', tag: 'Lunch', done: false, doneBy: null, doneAt: null },
+      { id: 'd7_6', group: 'day7', tab: 'itinerary', time: '13:30 – 15:20', title: 'Travel to & Visit Hwaseong Fortress (20m Bus + 90m Stay)', notes: '20 mins bus + 90 mins stay at Hwaseong Fortress.', routeTip: 'Route: Bus from Suwon Station -> Hwaseong Fortress.', mapQuery: 'Hwaseong Fortress Suwon', tag: '90m Stay', done: false, doneBy: null, doneAt: null },
+      { id: 'd7_7', group: 'day7', tab: 'itinerary', time: '15:20 – 17:00', title: 'Travel to & Visit Starfield Suwon (25m + 75m Stay)', notes: '25 mins travel + 75 mins stay at Starfield Suwon (Byeolmadang Library).', routeTip: 'Route: Bus/Taxi -> Starfield Suwon.', mapQuery: 'Starfield Suwon', tag: '75m Stay', done: false, doneBy: null, doneAt: null },
+      { id: 'd7_8', group: 'day7', tab: 'itinerary', time: '17:00 – 18:02', title: 'Travel to Suwon Station (17:00–17:20) & Train to Yeongdeungpo (17:42–18:02)', notes: '20 mins to Suwon Station + 20 mins train back to Yeongdeungpo.', routeTip: 'Route: Starfield Suwon -> Suwon Station -> Yeongdeungpo.', mapQuery: 'Yeongdeungpo Station Seoul', tag: 'Return Train', done: false, doneBy: null, doneAt: null },
+      { id: 'd7_9', group: 'day7', tab: 'itinerary', time: '18:02 – 19:00', title: 'Go back, rest in Hotel & Get luggage in hotel (18:50–19:00)', notes: 'Rest at Hotel GMS lobby/lounge and retrieve suitcases at 18:50.', routeTip: 'Route: Yeongdeungpo -> Hotel GMS.', mapQuery: 'Hotel GMS Seoul', tag: 'Get Luggage', done: false, doneBy: null, doneAt: null },
+      { id: 'd7_10', group: 'day7', tab: 'itinerary', time: '19:00 – 20:05', title: 'Go to Airport Limousine pick up & Arrive in Incheon Airport • ₩34,000', notes: '5 mins walk to pickup (19:00–19:05) + 60 mins Airport Limousine ride (19:05–20:05). Limousine bus paid via T-Money (₩34,000); option taxi to airport (₩67,000).', routeTip: 'Route: Airport Limousine pickup -> Incheon Airport Terminal 1.', mapQuery: 'Incheon International Airport Terminal 1', tag: '₩34,000 • T-Money', done: false, doneBy: null, doneAt: null },
+      { id: 'd7_11', group: 'day7', tab: 'itinerary', time: '23:15 – 02:15 (+1)', title: 'Tax Refund, Bag Drop & Flight Home: Cebu Pacific 5J 187 (Ref: TH512C)', notes: 'Check-in opens 11:15 PM (3 hrs prior) — scan tax-free receipts at ICN T1 kiosks BEFORE bag drop. Flight 5J 187 departs Dec 2 at 02:15 AM (Seats: Mike 22B, Angelu 22A, 20kg each) and lands at NAIA T3 at 05:45 AM.', routeTip: 'Route: ICN T1 Departures (3F) → Tax Refund Kiosks → 5J 187 Bag Drop → Gate → NAIA T3 (05:45 AM).', mapQuery: 'Incheon International Airport Terminal 1', tag: '5J 187 • TH512C', done: false, doneBy: null, doneAt: null },
+
+      // DOCUMENTS & MUST-BRING — MIKE'S PERSONAL CHECKLIST
+      { id: 'doc_m1', group: 'docs_mike', tab: 'docs', time: 'Must Have', title: "Mike's Valid Passport (6+ Months Validity)", notes: 'Keep physical passport in carry-on pouch + photo backup on phone.', tag: 'Mike • ID', done: false, doneBy: null, doneAt: null },
+      { id: 'doc_m2', group: 'docs_mike', tab: 'docs', time: 'Printed + PDF', title: "Mike's South Korea Visa Grant Notice (Printed Copy)", notes: 'Print 2 copies (one in carry-on document folder, one spare in suitcase).', tag: 'Mike • Visa', done: false, doneBy: null, doneAt: null },
+      { id: 'doc_m3', group: 'docs_mike', tab: 'docs', time: 'Submitted ✓', title: "Mike's PH eTravel (F00Y0ASRFTW4) & Korea e-Arrival Card (EAC-26-PA-17605251-00)", notes: 'Both submitted! PH eTravel valid thru Nov 26; Korea e-Arrival Card expires Nov 26 at 11:55 AM.', tag: 'Mike • Cleared', done: false, doneBy: null, doneAt: null },
+      { id: 'doc_m4', group: 'docs_mike', tab: 'docs', time: 'Seats 11B / 22B', title: "Mike's Flight & KTX Tickets (5J 186 Seat 11B • 5J 187 Seat 22B)", notes: 'Flights: HRIESB (11B) & TH512C (22B) • KTX033 Car 16 Seat 11B (80021-1031-10112-01) • KTX036 Car 3 Seat 8D (80031-1031-10097-78).', tag: 'Mike • Tickets', done: false, doneBy: null, doneAt: null },
+      { id: 'doc_m5', group: 'docs_mike', tab: 'docs', time: 'Ref: EPJ738954', title: "Mike's 72h Mobile Discover Seoul Pass + Climate Card (TV2631813418)", notes: 'Register code TV2631813418 in Discover Seoul Pass app (no DSP pickup needed). Pick up bundled Seoul Climate Card at ICN T1 1F West Desk (Across from Exit 13, SK Roaming Center, 24h).', tag: 'Mike • DSP + Climate', done: false, doneBy: null, doneAt: null },
+      { id: 'doc_m7', group: 'docs_mike', tab: 'docs', time: 'Cards & Cash', title: "Mike's Metrobank / BDO Visa Cards + KRW Cash + Powerbank", notes: 'Cards used for hotel & KTX bookings + physical KRW cash for T-Money/Climate Card top-ups & street food + powerbank (carry-on!).', tag: 'Mike • Wallet', done: false, doneBy: null, doneAt: null },
+      { id: 'doc_m9', group: 'docs_mike', tab: 'docs', time: 'CU / GS25 (Cash Only)', title: "Mike's T-Money Card (Buy / Top Up ~₩30,000 Cash at ICN T1)", notes: 'Buy at CU/GS25 convenience store in Incheon T1 1F Arrivals or bring existing T-Money. Top up with KRW cash—required for Airport Limousine #6007 (~₩17k each way), Busan Metro/buses, and Suwon/Gapyeong!', tag: 'Mike • T-Money', done: false, doneBy: null, doneAt: null },
+
+      // DOCUMENTS & MUST-BRING — ANGELU'S PERSONAL CHECKLIST
+      { id: 'doc_a1', group: 'docs_angelu', tab: 'docs', time: 'Must Have', title: "Angelu's Valid Passport (6+ Months Validity)", notes: 'Keep physical passport in carry-on pouch + photo backup on phone.', tag: 'Angelu • ID', done: false, doneBy: null, doneAt: null },
+      { id: 'doc_a2', group: 'docs_angelu', tab: 'docs', time: 'Printed + PDF', title: "Angelu's South Korea Visa Grant Notice (Printed Copy)", notes: 'Print 2 copies (one in carry-on document folder, one spare in suitcase).', tag: 'Angelu • Visa', done: false, doneBy: null, doneAt: null },
+      { id: 'doc_a3', group: 'docs_angelu', tab: 'docs', time: '72h Before', title: "Angelu's PH eTravel QR & Korea e-Arrival Card (e-arrivalcard.go.kr)", notes: 'Submit PH eTravel (etravel.gov.ph) AND Korea e-Arrival Card (e-arrivalcard.go.kr) within 72 hours before flight & save QR/confirmation screenshots.', tag: 'Angelu • Immigration', done: false, doneBy: null, doneAt: null },
+      { id: 'doc_a4', group: 'docs_angelu', tab: 'docs', time: 'Seats 11A / 22A', title: "Angelu's Flight & KTX Tickets (5J 186 Seat 11A • 5J 187 Seat 22A)", notes: 'Flights: HRIESB (11A) & TH512C (22A) • KTX033 Car 16 Seat 11A (80021-1031-10111-22) • KTX036 Car 3 Seat 8C (80031-1031-10096-45).', tag: 'Angelu • Tickets', done: false, doneBy: null, doneAt: null },
+      { id: 'doc_a5', group: 'docs_angelu', tab: 'docs', time: 'Ref: FRJ664933', title: "Angelu's 72h Mobile Discover Seoul Pass (Voucher: TV2677932716)", notes: 'Register code TV2677932716 in Discover Seoul Pass app (no airport pickup needed!). Includes 72h attractions, K-Limousine, AREX, and free 5-day SKT eSIM.', tag: 'Angelu • 72h DSP', done: false, doneBy: null, doneAt: null },
+      { id: 'doc_a7', group: 'docs_angelu', tab: 'docs', time: 'Cards & Cash', title: "Angelu's BDO Visa Card + KRW Cash + Powerbank", notes: 'BDO Visa used for Klook Busan tour + physical KRW cash for T-Money/Climate Card top-ups & street food + powerbank (carry-on!).', tag: 'Angelu • Wallet', done: false, doneBy: null, doneAt: null },
+      { id: 'doc_a8', group: 'docs_angelu', tab: 'docs', time: 'ICN T1 • Exit 13 / CU', title: "Angelu's Seoul Climate Card (Buy at ICN T1 CU/GS25 or Info Desk)", notes: 'Buy physical Climate Card (~₩3,000) at Incheon T1 convenience store / tourist info & reload with KRW cash for unlimited Seoul subways & buses.', tag: 'Angelu • Climate Card', done: false, doneBy: null, doneAt: null },
+      { id: 'doc_a9', group: 'docs_angelu', tab: 'docs', time: 'CU / GS25 (Cash Only)', title: "Angelu's T-Money Card (Buy / Top Up ~₩30,000 Cash at ICN T1)", notes: 'Buy at CU/GS25 convenience store in Incheon T1 1F Arrivals or bring existing T-Money. Top up with KRW cash—required for Airport Limousine #6007 (~₩17k each way), Busan Metro/buses, and Suwon/Gapyeong!', tag: 'Angelu • T-Money', done: false, doneBy: null, doneAt: null },
+
+      // DOCUMENTS & MUST-BRING — SHARED HOTELS, TOURS & ESSENTIALS
+      { id: 'doc_s1', group: 'docs_shared', tab: 'docs', time: 'Nov 25 – 28', title: 'Hotel Voucher #1: Fairfield by Marriott Seoul (Agoda ID: 1792390167)', notes: '3 Nights • Yeongdeungpo Station (Line 1, Exit 5 Elevator / Limousine #6007 drop-off). Save Agoda confirmation PDF offline.', tag: 'Hotel 1', done: false, doneBy: null, doneAt: null },
+      { id: 'doc_s2', group: 'docs_shared', tab: 'docs', time: 'Nov 28 – 30', title: 'Hotel Voucher #2: Gwangalli Moon Bay Hotel Busan (Agoda ID: 1792427263)', notes: 'Check-in after 5:00 PM (front desk closes 9 PM–9 AM) • Check-out 12:00 PM • 51 Namcheonbada-ro 33beon-gil, Suyeong-gu.', tag: 'Hotel 2', done: false, doneBy: null, doneAt: null },
+      { id: 'doc_s3', group: 'docs_shared', tab: 'docs', time: 'Nov 30 – Dec 1', title: 'Hotel Voucher #3: Hotel GMS Seoul (Agoda ID: 1792436351)', notes: 'Check-in after 4:00 PM • Check-out 12:00 PM • 867 Gyeongin-ro, Yeongdeungpo-gu (Tel: 8228822000). Leave bags Dec 1 for Suwon.', tag: 'Hotel 3', done: false, doneBy: null, doneAt: null },
+      { id: 'doc_s4', group: 'docs_shared', tab: 'docs', time: 'Nov 29 • 08:20 AM', title: 'Klook #1: Busan Highlight City Tour + Sky Capsule (Ref: WBP740606)', notes: 'Voucher No: KLK8204905344 (2 Adults) • Meet 08:10 AM at Haeundae Station Exit 5 (Departs 08:20 AM) • Operator: KTourStory (+82-10-9650-8388). Includes Sky Capsule, Oryukdo Skywalk, Huinnyeoul, Gamcheon & Busan Christmas Village drop-off.', tag: 'Klook Tour', done: false, doneBy: null, doneAt: null },
+      { id: 'doc_s5', group: 'docs_shared', tab: 'docs', time: 'Nov 29 • Freebie', title: 'Klook #2: Lotte Dept. Store Gwangbok Coffee & Gift Voucher (Ref: TMZ226563)', notes: 'Voucher No: KLK8442093665 • Nampo Station Exit 10 (Open til 20:30). Present Klook voucher + passport at 3F AVENUEL BAR for free welcome coffee & 9F Gift Desk for reusable bag.', tag: 'Klook Freebie', done: false, doneBy: null, doneAt: null },
+      { id: 'doc_s6', group: 'docs_shared', tab: 'docs', time: 'Safety', title: 'Travel Insurance Certificates & Type C/F Plug Adapters + Pen', notes: 'Save insurance PDFs for both + pack Korea Type C/F adapters and a black ballpoint pen.', tag: 'Shared Kit', done: false, doneBy: null, doneAt: null },
+
+      // FOOD SPOTS
+      { id: 'food_0', group: 'food_spots', tab: 'food', time: 'Open 24 Hours', title: 'Ssada Gimbap (Euljiro / Myeongdong) • Est. ₩18,000 (~₱785 for 2)', notes: '🍽️ Day 1 Brunch Stop (9:30 AM): Tunamayo/Bulgogi Gimbap, Tteokbokki, Rabokki & Donkatsu. Walk ~9 mins to Myeongdong after!', mapQuery: 'Ssada Gimbap Euljiro Seoul', tag: 'Day 1 Brunch', done: false, doneBy: null, doneAt: null },
+      { id: 'food_0b', group: 'food_spots', tab: 'food', time: 'Evening • Gangnam', title: 'Bbqyul or Samyukga (Gangnam Dinner w/ Pam)', notes: '🍽️ Day 1 Dinner Stop (19:15): Korean BBQ / Samgyeopsal dinner spot in Gangnam near Sinnonhyeon / Gangnam Station.', mapQuery: 'Samyukga Gangnam Seoul', tag: 'Day 1 Dinner', done: false, doneBy: null, doneAt: null },
+      { id: 'food_0c', group: 'food_spots', tab: 'food', time: 'Day 2 • 12:05 PM', title: '1in1jan Cafe & Lunch (Eunpyeong Hanok Village) • Est. ₩70,000', notes: '🍽️ Day 2 Lunch Stop: Scenic multi-floor Hanok view cafe & Korean fusion lunch in Eunpyeong Hanok Village.', mapQuery: '1in1jan Eunpyeong Hanok Village Seoul', tag: 'Day 2 Lunch', done: false, doneBy: null, doneAt: null },
+      { id: 'food_1', group: 'food_spots', tab: 'food', time: '09:00 – 23:00', title: 'Juyeonie Bapjip (Dongdaemun) • Est. ₩25,000–₩35,000 (~₱1,100–₱1,520 for 2)', notes: '🍽️ Recommended Orders: Kimchi Jjigae (Kimchi Stew), Doenjang Jjigae (Soybean Paste Stew), Jeyuk Bokkeum (Spicy Stir-Fried Pork) & Korean Rolled Omelette (Gyeran-mari). Ideal homestyle meal near DDP.', mapQuery: 'Juyeonie Bapjip Dongdaemun Seoul', tag: 'Est. ~₱1,300 (2 Pax)', done: false, doneBy: null, doneAt: null },
+      { id: 'food_2', group: 'food_spots', tab: 'food', time: '11:00 – 21:30', title: 'Jung In Myunok (Yeongdeungpo) • Est. ₩32,000–₩42,000 (~₱1,400–₱1,830 for 2)', notes: '🍽️ Recommended Orders: Mul-Naengmyeon (Signature Cold Buckwheat Noodles, ~₩14k), Bibim-Naengmyeon (~₩14k) & Boiled Pork Slices (Suyuk / Pyongyang Mandu to share). Near Fairfield Seoul! ⚠️ 15:00–17:00 break.', mapQuery: 'Jung In Myunok Yeongdeungpo Seoul', tag: 'Est. ~₱1,600 (2 Pax)', done: false, doneBy: null, doneAt: null },
+      { id: 'food_3', group: 'food_spots', tab: 'food', time: '17:00 – 23:00', title: 'Chupungnyeong Kal Samgyeopsal (Apgujeong) • Est. ₩50,000–₩65,000 (~₱2,175–₱2,830 for 2)', notes: '🍽️ Recommended Orders: Signature Diamond-Cut Kal-Samgyeopsal (2–3 servings, ~₩18k/serving), Moksal (Pork Neck), Kimchi Fried Rice (Bokkeumbap) & Doenjang Jjigae. Famous K-pop idol BBQ spot!', mapQuery: 'Chupungnyeong Kal Samgyeopsal Apgujeong Seoul', tag: 'Est. ~₱2,500 (2 Pax)', done: false, doneBy: null, doneAt: null },
+
+      // FREE TIME OPTIONS
+      { id: 'free_0', group: 'free_time', tab: 'food', time: 'Day 1 PM', title: 'Over the Rainbow (RBW / Mamamoo Company — Guui)', notes: 'Get Solar photocard & drink + Kanghyun cupsleeve birthday event! (~₩18,000)', mapQuery: 'Over the Rainbow RBW Guui Seoul', tag: 'Gwangjin / Guui', done: false, doneBy: null, doneAt: null },
+      { id: 'free_1', group: 'free_time', tab: 'food', time: 'Day 1 / Day 3', title: 'Hallyu K-Star Road & Lotte Mall (Gangnam)', notes: 'Optional after COEX on Day 1 (20 mins via train) or after Lotte World on Day 3!', mapQuery: 'Hallyu K Star Road Gangnam Seoul', tag: 'Gangnam', done: false, doneBy: null, doneAt: null },
+      { id: 'free_2', group: 'free_time', tab: 'food', time: 'Day 2 / Day 3', title: 'Myeongdong Shopping, Daiso & DDP Area Explore', notes: 'Street food, Daiso 12-story flagship & Dongdaemun Design Plaza.', mapQuery: 'Dongdaemun Design Plaza Seoul', tag: 'Myeongdong / DDP', done: false, doneBy: null, doneAt: null },
+      { id: 'free_3', group: 'free_time', tab: 'food', time: 'Day 3', title: 'I’Park Mall Yongsan', notes: 'Connected directly to Yongsan Station.', mapQuery: 'Ipark Mall Yongsan Seoul', tag: 'Yongsan', done: false, doneBy: null, doneAt: null },
+      { id: 'free_4', group: 'free_time', tab: 'food', time: 'Day 3 / Day 4 AM', title: 'Yeongdeungpo Park & Area Around Hotel', notes: 'Right beside Fairfield by Marriott Seoul for a relaxing morning stroll.', mapQuery: 'Yeongdeungpo Park Seoul', tag: 'Yeongdeungpo', done: false, doneBy: null, doneAt: null },
+      { id: 'free_5', group: 'free_time', tab: 'food', time: 'Day 5 PM', title: 'Haeundae Beach (Busan)', notes: 'Evening beach walk in Busan after Klook tour drop-off.', mapQuery: 'Haeundae Beach Busan', tag: 'Busan', done: false, doneBy: null, doneAt: null },
+      { id: 'free_6', group: 'free_time', tab: 'food', time: 'Day 6', title: 'Goods Moment (Hongik Univ. Exit 3) & Mangwon Market', notes: 'Hongik Univ station exit 3 - Goods moment (manhwa merch) • Free time, Mangwon market • Daiso & Myeongdong shopping.', mapQuery: 'Hongik Univ Station Exit 3 Seoul', tag: 'Hongdae / Mapo', done: false, doneBy: null, doneAt: null },
+
+      // DISCOVER SEOUL PASS ATTRACTIONS (Synced with Day 1, Day 2, Day 3 DSP rows)
+      { id: 'dsp_1', group: 'dsp_list', tab: 'dsp', time: 'Day 1 • 11:15 AM', title: 'Changdeokgung Palace (Activates 72h Mobile DSP)', notes: 'Included free with 72h Discover Seoul Pass (opens 9:00 AM).', mapQuery: 'Changdeokgung Palace Seoul', tag: 'DSP Day 1', done: false, doneBy: null, doneAt: null },
+      { id: 'dsp_2', group: 'dsp_list', tab: 'dsp', time: 'Day 1 • 04:50 PM', title: 'COEX Aquarium (Gangnam)', notes: 'Included free with 72h Discover Seoul Pass.', mapQuery: 'COEX Aquarium Seoul', tag: 'DSP Day 1', done: false, doneBy: null, doneAt: null },
+      { id: 'dsp_3', group: 'dsp_list', tab: 'dsp', time: 'Day 2 • 08:30 AM', title: 'Daehan Hanbok Rental + Gyeongbokgung Palace', notes: 'Included free with 72h Discover Seoul Pass (exit palace by 11:10 AM).', mapQuery: 'Daehan Hanbok Gyeongbokgung Seoul', tag: 'DSP Day 2', done: false, doneBy: null, doneAt: null },
+      { id: 'dsp_4', group: 'dsp_list', tab: 'dsp', time: 'Day 2 • 03:20 PM', title: 'N Seoul Tower Observatory', notes: 'Included free with 72h Discover Seoul Pass.', mapQuery: 'N Seoul Tower', tag: 'DSP Day 2', done: false, doneBy: null, doneAt: null },
+      { id: 'dsp_5', group: 'dsp_list', tab: 'dsp', time: 'Day 2 • 07:00 PM', title: 'Moonlight E-Land Cruise (Yeouido)', notes: 'Included free with 72h Discover Seoul Pass (exchange ticket at Yeouido Pier 1 by 17:45).', mapQuery: 'Eland Cruise Yeouido Seoul', tag: 'DSP Day 2', done: false, doneBy: null, doneAt: null },
+      { id: 'dsp_6', group: 'dsp_list', tab: 'dsp', time: 'Day 3 • 09:20 AM', title: 'Nami Island Ferry', notes: 'Included free with 72h Discover Seoul Pass.', mapQuery: 'Nami Island Ferry Wharf', tag: 'DSP Day 3', done: false, doneBy: null, doneAt: null },
+      { id: 'dsp_7', group: 'dsp_list', tab: 'dsp', time: 'Day 3 • 02:50 PM', title: 'Lotte World Adventure (Theme Park)', notes: 'Included free with 72h Discover Seoul Pass! Redeem physical ticket at South Gate Foreign Ticket Booth.', mapQuery: 'Lotte World Adventure Seoul', tag: 'DSP Day 3', done: false, doneBy: null, doneAt: null }
+    ];
+
+    // =========================================================================
+    // 2. STATE, HELPERS & REAL-TIME TWO-PHONE SYNC
+    // =========================================================================
+    let tripItems = JSON.parse(JSON.stringify(DEFAULT_ITEMS));
+    let tripExpenses = [];
+    let previousTripBackup = null;
+    let toastTimer = null;
+    let currentTraveler = 'Mike';
+    let activeTab = 'docs';
+    let activeItineraryDay = 'day1';
+    let activeFilter = 'all';
+    let expandedNotes = {};
+    let pendingNewTaskMedia = null;
+
+    let db = null;
+    let roomDocRef = null;
+    let isRemoteUpdating = false;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    let roomId = urlParams.get('room');
+    if (!roomId) {
+      roomId = 'kr2026-' + Math.random().toString(36).substring(2, 7);
+      try {
+        const nextUrl = new URL(window.location.href);
+        nextUrl.searchParams.set('room', roomId);
+        window.history.replaceState({}, '', nextUrl.toString());
+      } catch (e) {
+        // Ignore history errors in restricted sandboxes
+      }
+    }
+    const LOCAL_STORAGE_KEY = `korea_2026_trip_${roomId}`;
+
+    // Merge user's existing checkmarks, media, and custom items onto the updated spreadsheet defaults
+    function migrateItemsPreservingProgress(existingItems) {
+      if (!Array.isArray(existingItems) || existingItems.length === 0) {
+        return JSON.parse(JSON.stringify(DEFAULT_ITEMS));
+      }
+      const byId = new Map(existingItems.map(i => [i.id, i]));
+      const mergedDefaults = DEFAULT_ITEMS.map(defItem => {
+        const prev = byId.get(defItem.id);
+        if (!prev) return { ...defItem };
+        return {
+          ...defItem,
+          done: !!prev.done,
+          doneBy: prev.doneBy || null,
+          doneAt: prev.doneAt || null,
+          media: Array.isArray(prev.media) ? prev.media : []
+        };
+      });
+      const customItems = existingItems.filter(i => i.custom);
+      return [...mergedDefaults, ...customItems];
+    }
+
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function showToast(msg, withUndo = false) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+      const undoBtn = document.getElementById('toast-undo-btn');
+      if (!toast || !toastMsg) return;
+
+      toastMsg.textContent = msg;
+      if (undoBtn) {
+        if (withUndo) undoBtn.classList.remove('hidden');
+        else undoBtn.classList.add('hidden');
+      }
+
+      toast.classList.remove('opacity-0');
+      toast.classList.add('opacity-100');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0');
+      }, withUndo ? 6000 : 2500);
+    }
+
+    function updateSyncStatus(text, colorClass = 'text-emerald-600') {
+      const textEl = document.getElementById('sync-text');
+      const badgeEl = document.getElementById('sync-badge');
+      if (textEl) textEl.textContent = text;
+      if (badgeEl) {
+        badgeEl.className = `inline-flex items-center gap-1 font-semibold ${colorClass}`;
+      }
+    }
+
+    function loadLocalFallback() {
+      try {
+        const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed.items)) {
+            if (parsed.schemaVersion !== SCHEMA_VERSION) {
+              tripItems = migrateItemsPreservingProgress(parsed.items);
+            } else {
+              tripItems = parsed.items;
+            }
+          }
+          if (Array.isArray(parsed.expenses)) tripExpenses = parsed.expenses;
+        }
+      } catch (e) {
+        // Ignore storage read errors
+      }
+    }
+
+    function saveLocalFallback() {
+      try {
+        localStorage.setItem(
+          LOCAL_STORAGE_KEY,
+          JSON.stringify({
+            schemaVersion: SCHEMA_VERSION,
+            items: tripItems,
+            expenses: tripExpenses,
+            updatedAt: Date.now()
+          })
+        );
+      } catch (e) {
+        // Ignore storage quota errors
+      }
+    }
+
+    async function persistItems() {
+      renderAll();
+      saveLocalFallback();
+      if (roomDocRef && !isRemoteUpdating) {
+        try {
+          await setDoc(
+            roomDocRef,
+            {
+              schemaVersion: SCHEMA_VERSION,
+              items: tripItems,
+              expenses: tripExpenses,
+              updatedAt: Date.now(),
+              updatedBy: currentTraveler
+            },
+            { merge: true }
+          );
+          updateSyncStatus('Live Synced', 'text-emerald-600');
+        } catch (err) {
+          updateSyncStatus('Saved Locally', 'text-amber-600');
+        }
+      }
+    }
+
+    async function initCloudSync() {
+      loadLocalFallback();
+      saveLocalFallback();
+      renderAll();
+
+      try {
+        if (typeof __firebase_config === 'undefined' || !__firebase_config) {
+          updateSyncStatus('Offline / Local Mode', 'text-slate-500');
+          return;
+        }
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        db = getFirestore(app);
+
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
+        }
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        roomDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'korea_itinerary_2026', roomId);
+
+        onSnapshot(
+          roomDocRef,
+          async (snap) => {
+            if (snap.exists()) {
+              const data = snap.data();
+              isRemoteUpdating = true;
+              if (Array.isArray(data.expenses)) {
+                tripExpenses = data.expenses;
+              }
+              if (Array.isArray(data.items) && data.items.length > 0) {
+                if (data.schemaVersion !== SCHEMA_VERSION) {
+                  tripItems = migrateItemsPreservingProgress(data.items);
+                  saveLocalFallback();
+                  renderAll();
+                  isRemoteUpdating = false;
+                  await setDoc(
+                    roomDocRef,
+                    { schemaVersion: SCHEMA_VERSION, items: tripItems, updatedAt: Date.now() },
+                    { merge: true }
+                  );
+                  updateSyncStatus('Live Synced', 'text-emerald-600');
+                  return;
+                }
+                tripItems = data.items;
+              }
+              saveLocalFallback();
+              renderAll();
+              isRemoteUpdating = false;
+              updateSyncStatus('Live Synced', 'text-emerald-600');
+            } else {
+              await setDoc(roomDocRef, {
+                schemaVersion: SCHEMA_VERSION,
+                items: tripItems,
+                expenses: tripExpenses,
+                createdAt: Date.now()
+              });
+              updateSyncStatus('Live Synced', 'text-emerald-600');
+            }
+          },
+          () => {
+            updateSyncStatus('Local Device Mode', 'text-amber-600');
+          }
+        );
+      } catch (e) {
+        updateSyncStatus('Local Device Mode', 'text-amber-600');
+      }
+    }
+
+    // =========================================================================
+    // 3. INTERACTION HANDLERS
+    // =========================================================================
+    window.setTraveler = function(name) {
+      currentTraveler = name;
+      const mikeBtn = document.getElementById('btn-user-mike');
+      const angeluBtn = document.getElementById('btn-user-angelu');
+      const expPaidBy = document.getElementById('exp-paid-by');
+
+      if (mikeBtn && angeluBtn) {
+        if (name === 'Mike') {
+          mikeBtn.className = 'px-2.5 py-1 rounded-xl text-xs font-bold transition bg-blue-600 text-white shadow-xs';
+          angeluBtn.className = 'px-2.5 py-1 rounded-xl text-xs font-bold transition bg-white text-slate-600 border border-slate-200 hover:bg-slate-100';
+        } else {
+          angeluBtn.className = 'px-2.5 py-1 rounded-xl text-xs font-bold transition bg-rose-600 text-white shadow-xs';
+          mikeBtn.className = 'px-2.5 py-1 rounded-xl text-xs font-bold transition bg-white text-slate-600 border border-slate-200 hover:bg-slate-100';
+        }
+      }
+      if (expPaidBy) expPaidBy.value = name;
+      showToast(`Checking as ${name}`);
+    };
+
+    // Process image (compressed via Canvas) or PDF (read as Data URL) for sync
+    function processAttachmentFile(file, maxDim = 900, quality = 0.72) {
+      return new Promise((resolve, reject) => {
+        if (!file) {
+          reject(new Error('No file selected'));
+          return;
+        }
+        const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+        const isImage = file.type.startsWith('image/');
+
+        if (!isPdf && !isImage) {
+          reject(new Error('Unsupported file type. Use PDF, PNG, JPG, or WEBP.'));
+          return;
+        }
+
+        if (isPdf) {
+          if (file.size > 750 * 1024) {
+            reject(new Error('PDF is over 750 KB. Please attach a smaller PDF or screenshot.'));
+            return;
+          }
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            resolve({
+              url: ev.target.result,
+              mimeType: 'application/pdf',
+              fileName: file.name || 'Document.pdf'
+            });
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = new Image();
+          img.onload = () => {
+            let { width, height } = img;
+            if (width > maxDim || height > maxDim) {
+              if (width > height) {
+                height = Math.round((height * maxDim) / width);
+                width = maxDim;
+              } else {
+                width = Math.round((width * maxDim) / height);
+                height = maxDim;
+              }
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            resolve({
+              url: canvas.toDataURL('image/jpeg', quality),
+              mimeType: 'image/jpeg',
+              fileName: file.name || 'Photo.jpg'
+            });
+          };
+          img.onerror = reject;
+          img.src = ev.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    window.attachMediaToItem = async function(id, event) {
+      const file = event.target?.files?.[0];
+      if (!file) return;
+      try {
+        showToast('Processing & syncing file...');
+        const processed = await processAttachmentFile(file);
+        const idx = tripItems.findIndex(item => item.id === id);
+        if (idx === -1) return;
+        if (!Array.isArray(tripItems[idx].media)) tripItems[idx].media = [];
+        tripItems[idx].media.push({
+          id: 'med_' + Date.now(),
+          url: processed.url,
+          mimeType: processed.mimeType,
+          fileName: processed.fileName,
+          addedBy: currentTraveler,
+          addedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        });
+        await persistItems();
+        showToast(`${processed.mimeType === 'application/pdf' ? '📄 PDF' : '📸 Photo'} added by ${currentTraveler}`);
+      } catch (err) {
+        showToast(err?.message || 'Could not attach file');
+      } finally {
+        event.target.value = '';
+      }
+    };
+
+    window.removeMediaFromItem = function(itemId, mediaId) {
+      const idx = tripItems.findIndex(item => item.id === itemId);
+      if (idx === -1 || !Array.isArray(tripItems[idx].media)) return;
+      tripItems[idx].media = tripItems[idx].media.filter(m => m.id !== mediaId);
+      persistItems();
+      showToast('Attachment removed');
+    };
+
+    window.openMediaLightbox = function(url, caption, mimeType = 'image/jpeg', fileName = 'attachment') {
+      const box = document.getElementById('media-lightbox');
+      const img = document.getElementById('lightbox-img');
+      const pdfFrame = document.getElementById('lightbox-pdf');
+      const cap = document.getElementById('lightbox-caption');
+      const dl = document.getElementById('lightbox-download');
+      if (!box || !img || !pdfFrame) return;
+
+      const isPdf = mimeType === 'application/pdf' || (typeof url === 'string' && url.startsWith('data:application/pdf'));
+      if (isPdf) {
+        img.classList.add('hidden');
+        img.src = '';
+        pdfFrame.src = url;
+        pdfFrame.classList.remove('hidden');
+      } else {
+        pdfFrame.classList.add('hidden');
+        pdfFrame.src = '';
+        img.src = url;
+        img.classList.remove('hidden');
+      }
+
+      if (dl) {
+        dl.href = url;
+        dl.download = fileName || (isPdf ? 'voucher.pdf' : 'photo.jpg');
+        dl.classList.remove('hidden');
+      }
+      if (cap) cap.textContent = caption || 'Attachment Preview';
+      box.classList.remove('hidden');
+    };
+
+    window.closeMediaLightbox = function() {
+      const box = document.getElementById('media-lightbox');
+      const pdfFrame = document.getElementById('lightbox-pdf');
+      if (pdfFrame) pdfFrame.src = '';
+      if (box) box.classList.add('hidden');
+    };
+
+    window.handleNewTaskMediaSelect = async function(event) {
+      const file = event.target?.files?.[0];
+      if (!file) return;
+      try {
+        const processed = await processAttachmentFile(file);
+        pendingNewTaskMedia = processed;
+        document.getElementById('new-task-media-status').textContent = processed.fileName;
+        const imgEl = document.getElementById('new-task-media-img');
+        const pdfBadge = document.getElementById('new-task-media-pdf-badge');
+        const pdfName = document.getElementById('new-task-media-pdf-name');
+
+        if (processed.mimeType === 'application/pdf') {
+          imgEl.classList.add('hidden');
+          pdfName.textContent = processed.fileName;
+          pdfBadge.classList.remove('hidden');
+        } else {
+          pdfBadge.classList.add('hidden');
+          imgEl.src = processed.url;
+          imgEl.classList.remove('hidden');
+        }
+        document.getElementById('new-task-media-preview').classList.remove('hidden');
+      } catch (e) {
+        showToast(e?.message || 'Unsupported file');
+      }
+    };
+
+    window.clearNewTaskMedia = function() {
+      pendingNewTaskMedia = null;
+      const input = document.getElementById('new-task-media-input');
+      if (input) input.value = '';
+      document.getElementById('new-task-media-status').textContent = 'No file selected';
+      document.getElementById('new-task-media-preview').classList.add('hidden');
+      document.getElementById('new-task-media-img').classList.remove('hidden');
+      document.getElementById('new-task-media-pdf-badge').classList.add('hidden');
+    };
+
+    window.switchTab = function(tabName) {
+      activeTab = tabName;
+      const allTabs = ['docs', 'itinerary', 'luggage', 'bookings', 'food', 'budget', 'dsp'];
+      const checklistTabs = ['docs', 'itinerary', 'food', 'dsp'];
+
+      allTabs.forEach(t => {
+        const viewEl = document.getElementById(`view-${t}`);
+        const btnEl = document.getElementById(`tab-${t}`);
+        if (viewEl) {
+          if (t === tabName) {
+            viewEl.classList.remove('hidden');
+          } else {
+            viewEl.classList.add('hidden');
+          }
+        }
+        if (btnEl) {
+          const spanClass = t === 'dsp' ? 'col-span-2 sm:col-span-1 ' : '';
+          if (t === tabName) {
+            btnEl.className = `tab-btn ${spanClass}px-2 py-2 rounded-xl text-[11px] sm:text-xs font-bold transition flex flex-col sm:flex-row items-center justify-center gap-1 bg-slate-900 text-white shadow-sm`;
+          } else if (t === 'luggage') {
+            btnEl.className = `tab-btn ${spanClass}px-2 py-2 rounded-xl text-[11px] sm:text-xs font-bold transition flex flex-col sm:flex-row items-center justify-center gap-1 bg-emerald-50 text-emerald-800 border border-emerald-200/80 hover:bg-emerald-100`;
+          } else if (t === 'budget') {
+            btnEl.className = `tab-btn ${spanClass}px-2 py-2 rounded-xl text-[11px] sm:text-xs font-bold transition flex flex-col sm:flex-row items-center justify-center gap-1 bg-amber-50 text-amber-900 border border-amber-200/80 hover:bg-amber-100`;
+          } else {
+            btnEl.className = `tab-btn ${spanClass}px-2 py-2 rounded-xl text-[11px] sm:text-xs font-bold transition flex flex-col sm:flex-row items-center justify-center gap-1 bg-slate-100 text-slate-600 hover:bg-slate-200`;
+          }
+        }
+      });
+
+      const filterBar = document.getElementById('filter-bar');
+      if (filterBar) {
+        if (checklistTabs.includes(tabName)) {
+          filterBar.classList.remove('hidden');
+        } else {
+          filterBar.classList.add('hidden');
+        }
+      }
+    };
+
+    window.updateExpenseCurrencyPlaceholder = function() {
+      const curr = document.getElementById('exp-currency')?.value || 'KRW';
+      const amtInput = document.getElementById('exp-amount');
+      if (!amtInput) return;
+      amtInput.placeholder = curr === 'PHP' ? 'Amount in Peso (₱)' : 'Amount in Won (₩)';
+    };
+
+    window.toggleExpenseCardDropdown = function() {
+      const method = document.getElementById('exp-method')?.value;
+      const cardSelect = document.getElementById('exp-card-type');
+      const logBtn = document.getElementById('exp-log-btn');
+      if (!cardSelect || !logBtn) return;
+
+      if (method === 'Card') {
+        cardSelect.classList.remove('hidden');
+        logBtn.className = 'col-span-2 sm:col-span-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xs font-bold py-2 px-3 transition';
+      } else {
+        cardSelect.classList.add('hidden');
+        logBtn.className = 'col-span-2 sm:col-span-6 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xs font-bold py-2 px-3 transition';
+      }
+    };
+
+    window.addExpenseEntry = function() {
+      const titleInput = document.getElementById('exp-title');
+      const currencySelect = document.getElementById('exp-currency');
+      const amountInput = document.getElementById('exp-amount');
+      const paidBySelect = document.getElementById('exp-paid-by');
+      const methodSelect = document.getElementById('exp-method');
+      const cardTypeSelect = document.getElementById('exp-card-type');
+
+      const title = titleInput.value.trim();
+      const currency = currencySelect ? currencySelect.value : 'KRW';
+      const rawAmount = parseFloat(amountInput.value);
+      const paidBy = paidBySelect ? paidBySelect.value : currentTraveler;
+      const method = methodSelect ? methodSelect.value : 'Cash';
+      const cardType = method === 'Card' && cardTypeSelect ? cardTypeSelect.value : null;
+
+      if (!title || isNaN(rawAmount) || rawAmount <= 0) {
+        showToast('Enter item name & valid amount');
+        return;
+      }
+
+      const rateInput = document.getElementById('conv-rate');
+      const rate = ((rateInput ? parseFloat(rateInput.value) : 43.5) || 43.5) / 1000;
+      const amountKrw = currency === 'PHP' ? Math.round(rawAmount / rate) : rawAmount;
+      const amountPhp = currency === 'PHP' ? rawAmount : rawAmount * rate;
+
+      tripExpenses.unshift({
+        id: 'exp_' + Date.now(),
+        title,
+        currency,
+        originalAmount: rawAmount,
+        amount: amountKrw,
+        amountPhp,
+        method,
+        cardType,
+        paidBy,
+        time: new Date().toLocaleDateString([], { month: 'short', day: 'numeric' })
+      });
+
+      titleInput.value = '';
+      amountInput.value = '';
+      persistItems();
+      const symbol = currency === 'PHP' ? '₱' : '₩';
+      showToast(`Logged ${symbol}${rawAmount.toLocaleString()} by ${paidBy}`);
+    };
+
+    window.setFilter = function(filterVal) {
+      activeFilter = filterVal;
+      ['all', 'pending', 'done'].forEach(f => {
+        const btn = document.getElementById(`filter-${f}`);
+        if (!btn) return;
+        btn.className = f === filterVal
+          ? 'filter-btn px-3 py-1 rounded-xl text-xs font-bold bg-slate-900 text-white transition'
+          : 'filter-btn px-3 py-1 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition';
+      });
+      renderAll();
+    };
+
+    window.toggleItemDone = function(id) {
+      const idx = tripItems.findIndex(item => item.id === id);
+      if (idx === -1) return;
+      const item = tripItems[idx];
+      item.done = !item.done;
+      if (item.done) {
+        item.doneBy = currentTraveler;
+        item.doneAt = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        showToast(`✓ Checked by ${currentTraveler}`);
+      } else {
+        item.doneBy = null;
+        item.doneAt = null;
+      }
+      persistItems();
+    };
+
+    window.toggleNotesDrawer = function(id) {
+      expandedNotes[id] = !expandedNotes[id];
+      renderAll();
+    };
+
+    window.updateItemNote = function(id, newNote) {
+      const idx = tripItems.findIndex(item => item.id === id);
+      if (idx === -1) return;
+      tripItems[idx].notes = newNote;
+      persistItems();
+      showToast('Note saved');
+    };
+
+    window.saveItemEdits = function(id) {
+      const idx = tripItems.findIndex(item => item.id === id);
+      if (idx === -1) return;
+      const timeVal = document.getElementById(`edit-time-${id}`)?.value.trim();
+      const tagVal = document.getElementById(`edit-tag-${id}`)?.value.trim();
+      const titleVal = document.getElementById(`edit-title-${id}`)?.value.trim();
+      const noteVal = document.getElementById(`note-input-${id}`)?.value.trim();
+
+      if (titleVal) tripItems[idx].title = titleVal;
+      if (timeVal) tripItems[idx].time = timeVal;
+      tripItems[idx].tag = tagVal || '';
+      tripItems[idx].notes = noteVal || '';
+      if (tripItems[idx].custom && titleVal) {
+        tripItems[idx].mapQuery = titleVal + ' South Korea';
+      }
+
+      expandedNotes[id] = false;
+      persistItems();
+      showToast('✓ Activity updated & synced');
+    };
+
+    window.deleteItem = function(id) {
+      tripItems = tripItems.filter(item => item.id !== id);
+      persistItems();
+      showToast('Item removed');
+    };
+
+    window.openAddModal = function(presetGroup = null) {
+      const select = document.getElementById('new-task-group');
+      if (select) {
+        if (presetGroup) {
+          select.value = presetGroup;
+        } else if (activeTab === 'docs') {
+          select.value = currentTraveler === 'Angelu' ? 'docs_angelu' : 'docs_mike';
+        } else if (activeTab === 'food') {
+          select.value = 'food_spots';
+        } else if (activeTab === 'dsp') {
+          select.value = 'dsp_list';
+        } else {
+          select.value = activeItineraryDay || 'day1';
+        }
+      }
+      clearNewTaskMedia();
+      document.getElementById('add-modal').classList.remove('hidden');
+    };
+
+    window.closeAddModal = function() {
+      clearNewTaskMedia();
+      document.getElementById('add-modal').classList.add('hidden');
+    };
+
+    window.saveNewTask = function() {
+      const group = document.getElementById('new-task-group').value;
+      const time = document.getElementById('new-task-time').value.trim() || 'Flexible';
+      const tag = document.getElementById('new-task-tag').value.trim() || 'Added';
+      const title = document.getElementById('new-task-title').value.trim();
+      const notes = document.getElementById('new-task-notes').value.trim();
+
+      if (!title) {
+        showToast('Please enter a title');
+        return;
+      }
+
+      let targetTab = 'itinerary';
+      if (group.startsWith('docs_')) targetTab = 'docs';
+      else if (group === 'food_spots' || group === 'free_time') targetTab = 'food';
+      else if (group === 'dsp_list') targetTab = 'dsp';
+
+      const initialMedia = pendingNewTaskMedia
+        ? [{
+            id: 'med_' + Date.now(),
+            url: pendingNewTaskMedia.url,
+            mimeType: pendingNewTaskMedia.mimeType,
+            fileName: pendingNewTaskMedia.fileName,
+            addedBy: currentTraveler,
+            addedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          }]
+        : [];
+
+      tripItems.push({
+        id: 'custom_' + Date.now(),
+        group,
+        tab: targetTab,
+        time,
+        title,
+        notes,
+        media: initialMedia,
+        mapQuery: title + ' South Korea',
+        tag,
+        done: false,
+        doneBy: null,
+        doneAt: null,
+        custom: true
+      });
+
+      document.getElementById('new-task-title').value = '';
+      document.getElementById('new-task-notes').value = '';
+      document.getElementById('new-task-time').value = '';
+      document.getElementById('new-task-tag').value = '';
+      closeAddModal();
+      switchTab(targetTab);
+      persistItems();
+      showToast(`Added to ${targetTab.toUpperCase()}`);
+    };
+
+    window.openShareModal = function() {
+      document.getElementById('room-code-display').textContent = roomId;
+      document.getElementById('share-url-input').value = window.location.href;
+      document.getElementById('share-modal').classList.remove('hidden');
+    };
+
+    window.closeShareModal = function() {
+      document.getElementById('share-modal').classList.add('hidden');
+    };
+
+    window.copyShareUrl = function() {
+      const input = document.getElementById('share-url-input');
+      input.select();
+      input.setSelectionRange(0, 99999);
+      try {
+        document.execCommand('copy');
+        showToast('Link copied! Send it to Angelu');
+      } catch (e) {
+        showToast('Select & copy the link above');
+      }
+    };
+
+    window.openResetModal = function() {
+      document.getElementById('reset-modal').classList.remove('hidden');
+    };
+
+    window.closeResetModal = function() {
+      document.getElementById('reset-modal').classList.add('hidden');
+    };
+
+    window.executeResetDefaults = function() {
+      previousTripBackup = JSON.parse(JSON.stringify(tripItems));
+      tripItems = JSON.parse(JSON.stringify(DEFAULT_ITEMS));
+      closeResetModal();
+      const undoBtn = document.getElementById('btn-undo-reset');
+      if (undoBtn) undoBtn.classList.remove('hidden');
+      persistItems();
+      showToast('Checklist reset to defaults', true);
+    };
+
+    window.undoReset = function() {
+      if (!previousTripBackup) {
+        showToast('Nothing to undo');
+        return;
+      }
+      tripItems = JSON.parse(JSON.stringify(previousTripBackup));
+      previousTripBackup = null;
+      const undoBtn = document.getElementById('btn-undo-reset');
+      if (undoBtn) undoBtn.classList.add('hidden');
+      persistItems();
+      showToast('✓ Reset undone! Progress restored');
+    };
+
+    window.deleteExpenseEntry = function(id) {
+      tripExpenses = tripExpenses.filter(e => e.id !== id);
+      persistItems();
+      showToast('Expense removed');
+    };
+
+    window.convertCurrency = function(source) {
+      const rateInput = document.getElementById('conv-rate');
+      const krwInput = document.getElementById('conv-krw');
+      const phpInput = document.getElementById('conv-php');
+      if (!rateInput || !krwInput || !phpInput) return;
+
+      const phpPerThousandKrw = parseFloat(rateInput.value) || 43.5;
+      const rate = phpPerThousandKrw / 1000;
+
+      if (source === 'krw') {
+        const krwVal = parseFloat(krwInput.value);
+        if (isNaN(krwVal)) {
+          phpInput.value = '';
+        } else {
+          phpInput.value = (krwVal * rate).toFixed(2);
+        }
+      } else {
+        const phpVal = parseFloat(phpInput.value);
+        if (isNaN(phpVal)) {
+          krwInput.value = '';
+        } else {
+          krwInput.value = Math.round(phpVal / rate);
+        }
+      }
+    };
+
+    window.setQuickKrw = function(amount) {
+      const krwInput = document.getElementById('conv-krw');
+      if (!krwInput) return;
+      krwInput.value = amount;
+      window.convertCurrency('krw');
+    };
+
+    window.selectItineraryDay = function(dayId) {
+      activeItineraryDay = dayId;
+      renderItineraryTab();
+    };
+
+    // =========================================================================
+    // 4. RENDERING FUNCTIONS
+    // =========================================================================
+    function matchesFilter(item) {
+      if (activeFilter === 'pending') return !item.done;
+      if (activeFilter === 'done') return item.done;
+      return true;
+    }
+
+    function renderTaskCard(item) {
+      const isExpanded = !!expandedNotes[item.id];
+      const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.mapQuery || item.title)}`;
+      const naverUrl = `https://map.naver.com/v5/search/${encodeURIComponent(item.mapQuery || item.title)}`;
+      const showMapLinks = item.tab !== 'docs' && item.mapQuery;
+
+      const doneBadge = item.done
+        ? `<span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full ${item.doneBy === 'Angelu' ? 'bg-rose-100 text-rose-700' : 'bg-blue-100 text-blue-700'}">
+             ✓ ${escapeHtml(item.doneBy || 'Done')} ${item.doneAt ? `• ${escapeHtml(item.doneAt)}` : ''}
+           </span>`
+        : '';
+
+      return `
+        <div class="bg-white rounded-2xl border ${item.done ? 'border-emerald-200/80 bg-emerald-50/20' : 'border-slate-200/90'} p-3.5 sm:p-4 shadow-2xs transition animate-card">
+          <div class="flex items-start gap-3">
+            <!-- Checkbox -->
+            <button onclick="toggleItemDone('${escapeHtml(item.id)}')" aria-label="Toggle completed" class="mt-0.5 w-6 h-6 rounded-lg border-2 flex items-center justify-center shrink-0 transition active:scale-90 ${item.done ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-slate-300 bg-white hover:border-blue-500'}">
+              ${item.done ? '<i class="fa-solid fa-check text-xs"></i>' : ''}
+            </button>
+
+            <!-- Card Body -->
+            <div class="flex-1 min-w-0">
+              <div class="flex flex-wrap items-center gap-1.5 mb-1">
+                ${item.time ? `<span class="text-[11px] font-extrabold text-slate-500">${escapeHtml(item.time)}</span>` : ''}
+                ${item.tag ? `<span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-[10px] font-bold">${escapeHtml(item.tag)}</span>` : ''}
+                ${doneBadge}
+              </div>
+
+              <h4 class="font-bold text-sm sm:text-[15px] leading-snug ${item.done ? 'line-through text-slate-400' : 'text-slate-900'}">
+                ${escapeHtml(item.title)}
+              </h4>
+
+              ${item.notes ? `
+                <p class="text-xs text-slate-600 mt-1 leading-relaxed">${escapeHtml(item.notes)}</p>
+              ` : ''}
+
+              ${item.routeTip ? `
+                <div class="mt-1.5 px-2.5 py-1.5 rounded-xl bg-sky-50/90 border border-sky-200/80 text-[11px] text-sky-950 flex items-start gap-1.5 leading-snug">
+                  <i class="fa-solid fa-route text-sky-600 mt-0.5 shrink-0"></i>
+                  <span>${escapeHtml(item.routeTip)}</span>
+                </div>
+              ` : ''}
+
+              <!-- Attached Media Thumbnails (PDFs, Photos & QR Screenshots) -->
+              ${Array.isArray(item.media) && item.media.length > 0 ? `
+                <div class="flex flex-wrap gap-2 mt-2.5">
+                  ${item.media.map(m => {
+                    const isPdf = m.mimeType === 'application/pdf' || (typeof m.url === 'string' && m.url.startsWith('data:application/pdf'));
+                    const safeFileName = escapeHtml(m.fileName || (isPdf ? 'Voucher.pdf' : 'Photo.jpg'));
+                    return `
+                    <div class="relative group">
+                      ${isPdf ? `
+                        <button
+                          type="button"
+                          onclick="openMediaLightbox('${m.url}', '${safeFileName} (${escapeHtml(m.addedBy || '')})', 'application/pdf', '${safeFileName}')"
+                          class="h-16 sm:h-20 px-3 rounded-xl border border-rose-200 bg-rose-50/90 hover:bg-rose-100 text-rose-900 flex flex-col items-start justify-center gap-0.5 cursor-pointer transition shadow-2xs max-w-[155px]"
+                        >
+                          <div class="flex items-center gap-1.5 text-rose-600 font-extrabold text-xs">
+                            <i class="fa-solid fa-file-pdf text-base"></i>
+                            <span>PDF</span>
+                          </div>
+                          <span class="text-[10px] font-bold text-slate-700 truncate w-full text-left">${safeFileName}</span>
+                        </button>
+                      ` : `
+                        <img
+                          src="${m.url}"
+                          alt="Attached media"
+                          onclick="openMediaLightbox('${m.url}', '${escapeHtml(item.title)} (${escapeHtml(m.addedBy || '')})', 'image/jpeg', '${safeFileName}')"
+                          class="h-16 w-16 sm:h-20 sm:w-20 rounded-xl object-cover border border-slate-200 cursor-pointer hover:opacity-90 transition shadow-2xs"
+                        />
+                      `}
+                      <button
+                        type="button"
+                        onclick="removeMediaFromItem('${escapeHtml(item.id)}', '${escapeHtml(m.id)}')"
+                        title="Delete attachment"
+                        class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-slate-900/85 hover:bg-rose-600 text-white text-[10px] flex items-center justify-center shadow-xs transition"
+                      >
+                        <i class="fa-solid fa-xmark"></i>
+                      </button>
+                    </div>
+                  `;}).join('')}
+                </div>
+              ` : ''}
+
+              <!-- Action Row -->
+              <div class="flex flex-wrap items-center gap-2 mt-2.5">
+                ${showMapLinks ? `
+                  <a href="${mapUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 text-[11px] font-bold transition">
+                    <i class="fa-solid fa-location-dot"></i> Google Maps
+                  </a>
+                  <a href="${naverUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-[11px] font-bold transition">
+                    <i class="fa-solid fa-map"></i> Naver Map
+                  </a>
+                ` : ''}
+
+                <label class="cursor-pointer inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 text-[11px] font-bold transition">
+                  <i class="fa-solid fa-paperclip"></i> + PDF / Photo
+                  <input type="file" accept="image/*,.pdf,application/pdf" onchange="attachMediaToItem('${escapeHtml(item.id)}', event)" class="hidden" />
+                </label>
+
+                <button onclick="toggleNotesDrawer('${escapeHtml(item.id)}')" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 text-[11px] font-bold transition">
+                  <i class="fa-solid fa-pen-to-square"></i> ${isExpanded ? 'Close Edit' : 'Edit'}
+                </button>
+
+                ${item.custom ? `
+                  <button onclick="deleteItem('${escapeHtml(item.id)}')" class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 text-[11px] font-bold transition">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                ` : ''}
+              </div>
+
+              <!-- Expandable Quick Editor (Time, Title, Tag & Notes) -->
+              ${isExpanded ? `
+                <div class="mt-3 pt-2.5 border-t border-slate-100 space-y-2">
+                  <div class="grid grid-cols-2 gap-2">
+                    <input id="edit-time-${escapeHtml(item.id)}" type="text" value="${escapeHtml(item.time || '')}" placeholder="Time (e.g., 04:00 PM)" class="w-full rounded-xl border border-slate-300 px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input id="edit-tag-${escapeHtml(item.id)}" type="text" value="${escapeHtml(item.tag || '')}" placeholder="Tag (e.g., Cafe / Shopping)" class="w-full rounded-xl border border-slate-300 px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                  </div>
+                  <input id="edit-title-${escapeHtml(item.id)}" type="text" value="${escapeHtml(item.title || '')}" placeholder="Activity Title" class="w-full rounded-xl border border-slate-300 px-2.5 py-1.5 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                  <textarea id="note-input-${escapeHtml(item.id)}" rows="2" placeholder="Notes, exit number, or reminder..." class="w-full rounded-xl border border-slate-300 px-2.5 py-1.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">${escapeHtml(item.notes || '')}</textarea>
+                  <div class="flex justify-end gap-1.5">
+                    <button onclick="toggleNotesDrawer('${escapeHtml(item.id)}')" class="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-600 text-[11px] font-bold hover:bg-slate-200 transition">
+                      Cancel
+                    </button>
+                    <button onclick="saveItemEdits('${escapeHtml(item.id)}')" class="px-3 py-1.5 rounded-xl bg-blue-600 text-white text-[11px] font-bold hover:bg-blue-700 transition">
+                      Save Changes
+                    </button>
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderDocsTab() {
+      const container = document.getElementById('docs-container');
+      const counter = document.getElementById('docs-counter');
+      if (!container) return;
+
+      const docItems = tripItems.filter(i => i.tab === 'docs');
+      const doneDocs = docItems.filter(i => i.done).length;
+      if (counter) counter.textContent = `${doneDocs}/${docItems.length}`;
+
+      const sections = [
+        {
+          id: 'docs_mike',
+          title: "👨🏻 Mike's Personal Documents & Essentials",
+          badge: 'bg-blue-50 text-blue-700 border-blue-200'
+        },
+        {
+          id: 'docs_angelu',
+          title: "👩🏻 Angelu's Personal Documents & Essentials",
+          badge: 'bg-rose-50 text-rose-700 border-rose-200'
+        },
+        {
+          id: 'docs_shared',
+          title: '💑 Shared Hotel Vouchers, Tour & Travel Kit',
+          badge: 'bg-indigo-50 text-indigo-700 border-indigo-200'
+        }
+      ];
+
+      container.innerHTML = sections.map(sec => {
+        const items = docItems.filter(i => i.group === sec.id && matchesFilter(i));
+        const allInSec = docItems.filter(i => i.group === sec.id);
+        const doneInSec = allInSec.filter(i => i.done).length;
+
+        return `
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2 px-1">
+              <h3 class="font-extrabold text-slate-900 text-sm sm:text-base">${sec.title}</h3>
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold border ${sec.badge}">
+                ${doneInSec}/${allInSec.length} Ready
+              </span>
+            </div>
+            <div class="space-y-2.5">
+              ${items.length > 0
+                ? items.map(renderTaskCard).join('')
+                : `<div class="bg-white rounded-2xl border border-dashed border-slate-200 p-4 text-center text-xs text-slate-400">No items match this filter.</div>`}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderItineraryTab() {
+      const pillsContainer = document.getElementById('day-jump-pills');
+      const container = document.getElementById('itinerary-container');
+      if (!pillsContainer || !container) return;
+
+      pillsContainer.innerHTML = DAY_META.map((day, idx) => {
+        const dayItems = tripItems.filter(i => i.group === day.id);
+        const doneCount = dayItems.filter(i => i.done).length;
+        const isAllDone = dayItems.length > 0 && doneCount === dayItems.length;
+        const isActive = day.id === activeItineraryDay;
+        const dateLabel = day.short.split('•')[1]?.trim() || '';
+
+        return `
+          <button onclick="selectItineraryDay('${day.id}')" class="px-2 py-2 rounded-xl text-center transition flex flex-col items-center justify-center border ${
+            isActive
+              ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
+              : isAllDone
+              ? 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100'
+              : 'bg-slate-50 text-slate-700 border-slate-200/80 hover:bg-slate-100'
+          }">
+            <span class="text-[11px] font-extrabold leading-tight">Day ${idx + 1}</span>
+            <span class="text-[10px] ${isActive ? 'text-blue-100' : 'text-slate-500'} font-medium leading-tight mt-0.5">${escapeHtml(dateLabel)}</span>
+            <span class="mt-1 px-1.5 py-0.2 rounded-full text-[9px] font-extrabold ${
+              isActive
+                ? 'bg-white/20 text-white'
+                : isAllDone
+                ? 'bg-emerald-200/70 text-emerald-900'
+                : 'bg-slate-200/70 text-slate-600'
+            }">${doneCount}/${dayItems.length}</span>
+          </button>
+        `;
+      }).join('');
+
+      const activeIdx = Math.max(0, DAY_META.findIndex(d => d.id === activeItineraryDay));
+      const day = DAY_META[activeIdx];
+      const prevDay = activeIdx > 0 ? DAY_META[activeIdx - 1] : null;
+      const nextDay = activeIdx < DAY_META.length - 1 ? DAY_META[activeIdx + 1] : null;
+
+      const dayItems = tripItems.filter(i => i.group === day.id);
+      const filteredItems = dayItems.filter(matchesFilter);
+      const doneCount = dayItems.filter(i => i.done).length;
+
+      container.innerHTML = `
+        <div id="section-${day.id}" class="space-y-3 animate-card">
+          <!-- Day Header Card -->
+          <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-2xs space-y-2.5">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <h3 class="font-extrabold text-slate-900 text-sm sm:text-base">${escapeHtml(day.title)}</h3>
+                <p class="text-xs text-slate-500 mt-0.5">${escapeHtml(day.subtitle)}</p>
+              </div>
+              <span class="shrink-0 px-2.5 py-1 rounded-xl bg-blue-50 text-blue-700 font-extrabold text-xs">
+                ${doneCount}/${dayItems.length} Done
+              </span>
+            </div>
+
+            <!-- Luggage-Smart Mode Banner -->
+            <div class="bg-emerald-50/80 border border-emerald-200/80 rounded-xl p-2.5 text-xs text-emerald-950">
+              <div class="flex items-center gap-1.5 font-extrabold text-emerald-800">
+                <i class="fa-solid fa-suitcase-rolling"></i>
+                <span>${escapeHtml(day.luggageMode)}</span>
+              </div>
+              <p class="text-[11px] text-emerald-900/90 mt-0.5 leading-relaxed">${escapeHtml(day.luggageTip)}</p>
+              ${day.routeRec ? `
+                <div class="mt-2 pt-2 border-t border-emerald-200/70 flex items-start gap-1.5 text-[11px] text-sky-950">
+                  <i class="fa-solid fa-route text-sky-700 mt-0.5 shrink-0"></i>
+                  <span class="font-semibold leading-relaxed">${escapeHtml(day.routeRec)}</span>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+
+          <!-- Active Day Activities -->
+          <div class="space-y-2.5">
+            ${filteredItems.length > 0
+              ? filteredItems.map(renderTaskCard).join('')
+              : `<div class="bg-white rounded-2xl border border-dashed border-slate-200 p-5 text-center text-xs text-slate-400">No activities match the current filter for ${escapeHtml(day.short)}.</div>`}
+          </div>
+
+          <!-- Quick Add Stop to This Day Button -->
+          <button onclick="openAddModal('${day.id}')" class="w-full py-3 px-4 rounded-2xl border-2 border-dashed border-blue-300 bg-blue-50/60 hover:bg-blue-100/70 active:scale-[0.99] text-blue-700 text-xs font-extrabold transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-circle-plus text-sm"></i>
+            <span>+ Add Stop or Side Trip to ${escapeHtml(day.short)}</span>
+          </button>
+
+          <!-- Previous / Next Day Footer Navigation -->
+          <div class="flex items-center justify-between gap-2 pt-1">
+            ${prevDay
+              ? `<button onclick="selectItineraryDay('${prevDay.id}')" class="px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold shadow-2xs transition flex items-center gap-1.5">
+                   <i class="fa-solid fa-chevron-left text-[10px]"></i> ${escapeHtml(prevDay.short)}
+                 </button>`
+              : `<div></div>`}
+            ${nextDay
+              ? `<button onclick="selectItineraryDay('${nextDay.id}')" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-2xs transition flex items-center gap-1.5">
+                   ${escapeHtml(nextDay.short)} <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                 </button>`
+              : `<div></div>`}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderFoodAndFreeTimeTab() {
+      const foodContainer = document.getElementById('food-container');
+      const freeContainer = document.getElementById('freetime-container');
+      if (!foodContainer || !freeContainer) return;
+
+      const foods = tripItems.filter(i => i.group === 'food_spots' && matchesFilter(i));
+      const frees = tripItems.filter(i => i.group === 'free_time' && matchesFilter(i));
+
+      foodContainer.innerHTML = foods.length > 0
+        ? foods.map(renderTaskCard).join('')
+        : `<div class="text-center text-xs text-slate-400 py-3">No restaurant items match this filter.</div>`;
+
+      freeContainer.innerHTML = frees.length > 0
+        ? frees.map(renderTaskCard).join('')
+        : `<div class="text-center text-xs text-slate-400 py-3">No free-time spots match this filter.</div>`;
+    }
+
+    function renderDspTab() {
+      const container = document.getElementById('dsp-container');
+      if (!container) return;
+
+      const dspItems = tripItems.filter(i => i.group === 'dsp_list' && matchesFilter(i));
+      container.innerHTML = dspItems.length > 0
+        ? dspItems.map(renderTaskCard).join('')
+        : `<div class="bg-white rounded-2xl border border-dashed border-slate-200 p-4 text-center text-xs text-slate-400">No DSP items match this filter.</div>`;
+    }
+
+    function renderExpensesList() {
+      const container = document.getElementById('expense-list-container');
+      const totalKrwEl = document.getElementById('live-expense-total-krw');
+      const totalPhpEl = document.getElementById('live-expense-total-php');
+      if (!container) return;
+
+      const rateInput = document.getElementById('conv-rate');
+      const rate = ((rateInput ? parseFloat(rateInput.value) : 43.5) || 43.5) / 1000;
+
+      const totalKrw = tripExpenses.reduce((sum, e) => sum + (Number(e.amount) || 0), 0);
+      const totalPhp = tripExpenses.reduce((sum, e) => {
+        if (e.currency === 'PHP' && typeof e.originalAmount === 'number') return sum + e.originalAmount;
+        return sum + (Number(e.amount) || 0) * rate;
+      }, 0);
+
+      if (totalKrwEl) totalKrwEl.textContent = `₩${Math.round(totalKrw).toLocaleString()}`;
+      if (totalPhpEl) totalPhpEl.textContent = `≈ ₱${totalPhp.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+
+      if (tripExpenses.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-5 px-3 bg-slate-50 rounded-2xl border border-dashed border-slate-200 text-xs text-slate-400">
+            No expenses logged yet. Add meals, T-Money loads, or shopping above during your trip!
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = tripExpenses.map(exp => {
+        const isPhpEntry = exp.currency === 'PHP';
+        const krwVal = Number(exp.amount) || 0;
+        const phpVal = isPhpEntry && typeof exp.originalAmount === 'number'
+          ? exp.originalAmount
+          : krwVal * rate;
+
+        const methodLabel = exp.method === 'Card' && exp.cardType
+          ? `💳 Card (${escapeHtml(exp.cardType)})`
+          : escapeHtml(exp.method);
+
+        const primaryAmount = isPhpEntry
+          ? `₱${phpVal.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`
+          : `₩${Math.round(krwVal).toLocaleString()}`;
+
+        const secondaryAmount = isPhpEntry
+          ? `≈ ₩${Math.round(krwVal).toLocaleString()}`
+          : `≈ ₱${phpVal.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+
+        const payerBadgeClass = exp.paidBy === 'Angelu'
+          ? 'text-rose-700 bg-rose-50 border-rose-200'
+          : 'text-blue-700 bg-blue-50 border-blue-200';
+
+        return `
+          <div class="flex items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 border border-slate-200/80 text-xs">
+            <div class="min-w-0 space-y-1">
+              <p class="font-bold text-slate-900 truncate">${escapeHtml(exp.title)}</p>
+              <div class="flex flex-wrap items-center gap-1.5 text-[11px] text-slate-500">
+                <span class="px-1.5 py-0.5 rounded border font-bold ${payerBadgeClass}">${exp.paidBy === 'Angelu' ? '👩🏻' : '👨🏻'} ${escapeHtml(exp.paidBy)}</span>
+                <span class="font-semibold text-slate-700">${methodLabel}</span>
+                <span>• ${escapeHtml(exp.time)}</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2.5 shrink-0">
+              <div class="text-right">
+                <span class="font-extrabold text-slate-900 block">${primaryAmount}</span>
+                <span class="text-[11px] text-slate-500">${secondaryAmount}</span>
+              </div>
+              <button onclick="deleteExpenseEntry('${escapeHtml(exp.id)}')" class="w-7 h-7 rounded-lg bg-white hover:bg-rose-50 text-slate-400 hover:text-rose-600 border border-slate-200 flex items-center justify-center transition">
+                <i class="fa-solid fa-trash text-[11px]"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function updateOverallProgress() {
+      const total = tripItems.length;
+      const done = tripItems.filter(i => i.done).length;
+      const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+      const counterEl = document.getElementById('progress-counter');
+      const fillEl = document.getElementById('progress-bar-fill');
+      if (counterEl) counterEl.textContent = `${done} / ${total} (${pct}%)`;
+      if (fillEl) fillEl.style.width = `${pct}%`;
+    }
+
+    function renderAll() {
+      updateOverallProgress();
+      renderDocsTab();
+      renderItineraryTab();
+      renderFoodAndFreeTimeTab();
+      renderDspTab();
+      renderExpensesList();
+    }
+
+    // Initialize UI & Cloud Sync
+    renderAll();
+    initCloudSync();
+  </script>
+</body>
+</html>
