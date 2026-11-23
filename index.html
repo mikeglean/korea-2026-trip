@@ -51,6 +51,10 @@
         </div>
 
         <div class="flex items-center gap-1.5 shrink-0">
+          <button id="btn-sync-now" onclick="manualSyncNow()" title="Sync latest updates now" class="px-2.5 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 active:scale-95 text-emerald-700 border border-emerald-200/80 text-xs font-bold transition flex items-center gap-1.5">
+            <i id="sync-now-icon" class="fa-solid fa-rotate text-[11px]"></i>
+            <span class="hidden sm:inline">Sync</span>
+          </button>
           <button onclick="openAddModal()" class="px-2.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xs font-bold shadow-xs transition flex items-center gap-1.5">
             <i class="fa-solid fa-plus text-[11px]"></i>
             <span>Add Stop</span>
@@ -1412,6 +1416,48 @@
     // =========================================================================
     // 3. INTERACTION HANDLERS
     // =========================================================================
+    window.manualSyncNow = async function() {
+      const iconEl = document.getElementById('sync-now-icon');
+      const btnEl = document.getElementById('btn-sync-now');
+      if (iconEl) iconEl.classList.add('fa-spin');
+      if (btnEl) btnEl.disabled = true;
+
+      try {
+        if (roomDocRef) {
+          updateSyncStatus('Live Synced', 'text-emerald-600');
+          showToast('✓ Live synced with room');
+          return;
+        }
+
+        const cfg = getCloudConfig();
+        if (!cfg.binUrl) {
+          saveLocalFallback();
+          showToast('Saved locally (no cloud endpoint set)');
+          return;
+        }
+
+        updateSyncStatus('Syncing...', 'text-blue-600');
+        const pulledNew = await pullFromRestEndpoint();
+        if (!pulledNew) {
+          await pushToRestEndpoint({
+            schemaVersion: SCHEMA_VERSION,
+            items: tripItems,
+            expenses: tripExpenses,
+            updatedAt: lastSyncedTimestamp || Date.now(),
+            updatedBy: currentTraveler
+          });
+          updateSyncStatus('Cloud Synced', 'text-emerald-600');
+        }
+        showToast('✓ Synced with cloud');
+      } catch (err) {
+        updateSyncStatus('Sync Failed', 'text-rose-600');
+        showToast('Could not sync—check connection');
+      } finally {
+        if (iconEl) iconEl.classList.remove('fa-spin');
+        if (btnEl) btnEl.disabled = false;
+      }
+    };
+
     window.setTraveler = function(name) {
       currentTraveler = name;
       const mikeBtn = document.getElementById('btn-user-mike');
