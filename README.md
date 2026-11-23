@@ -2,7 +2,7 @@ Korea 2026: Mike & Angelu — Trip Companion App
 
 A collaborative, mobile-friendly trip companion web app built for Mike & Angelu's South Korea trip (Nov 25 – Dec 2, 2026) across Seoul, Gapyeong (Nami Island), Busan, and Suwon.
 
-Live app URL: https://mikeglean.github.io/korea-2026-trip/?room=kr2026-x7s6efghi
+Live app URL: to be public soon
 
 Key Features
 
